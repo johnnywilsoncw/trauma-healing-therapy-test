@@ -1,0 +1,22 @@
+---
+// A client testimonial card for MDX. The quote text is the slot; `by` is the attribution line.
+interface Props { by?: string; featured?: boolean }
+const { by = 'Anonymous Client', featured = false } = Astro.props;
+---
+<figure class:list={['quote', { featured }]} data-reveal>
+  <svg class="q-mark" viewBox="0 0 48 36" aria-hidden="true"><path d="M0 36V22C0 9.5 6.3 2.2 19 0l2 5.2C13.6 7.4 10.4 11.6 10.2 18H19v18H0zm29 0V22C29 9.5 35.3 2.2 48 0l2 5.2c-7.4 2.2-10.6 6.4-10.8 12.8H48v18H29z" /></svg>
+  <blockquote class="q-text"><slot /></blockquote>
+  <figcaption class="q-by">{by}</figcaption>
+</figure>
+
+<style>
+  .quote { position: relative; display: flex; flex-direction: column; margin: 0; padding: 2rem 1.9rem 1.6rem; background: #fff; border-radius: var(--radius-lg); border: 1px solid rgb(15 42 33 / 0.08); box-shadow: var(--shadow); text-align: left; height: 100%; }
+  .q-mark { width: 2.6rem; height: auto; fill: var(--rose-300); margin-bottom: 1rem; }
+  .q-text { margin: 0 0 1.25rem; padding: 0; border: 0; font-family: var(--font-body); font-style: normal; font-size: 1rem; line-height: 1.7; color: var(--ink); }
+  .q-text :global(p) { margin: 0 0 0.9em; }
+  .q-text :global(p:last-child) { margin-bottom: 0; }
+  .q-text :global(em) { font-style: normal; }
+  .q-by { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--line); font-weight: 700; font-size: 0.92rem; color: var(--forest); }
+  .featured { padding: clamp(1.75rem, 4vw, 3rem); background: linear-gradient(150deg, #fff 0%, var(--rose-50) 100%); }
+  .featured .q-text { font-family: var(--font-display); font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem); line-height: 1.65; }
+</style>

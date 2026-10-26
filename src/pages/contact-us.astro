@@ -1,41 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactWelcome from '../components/ContactWelcome.astro';
 import LocationSection from '../components/LocationSection.astro';
 import { officeSchema } from '../lib/schema';
 
-const geo = (await getCollection('geo')).filter((g) => !g.data.draft).sort((a, b) => a.data.city.localeCompare(b.data.city));
+const cupertino = (await getEntry('locations', 'cupertino'))!;
 ---
 <BaseLayout
   title="Contact Us | Cupertino & San Francisco, CA | Trauma Healing Therapy"
   description="Contact Trauma Healing Therapy: send a message, book a free matching consultation, or call (408) 389-4075. In person in Cupertino and online across California."
   schema={[officeSchema('cupertino'), officeSchema('san-francisco')]}
 >
-  <ContactWelcome title="Contact Us" video="pDLziuBkx3Q" />
+  <ContactWelcome title="Contact Us" video="pDLziuBkx3Q" officeVideo={cupertino.data.officeVideo} />
 
   <LocationSection />
-
-  {geo.length > 0 && (
-    <section class="section areas-band" aria-labelledby="areas-heading">
-      <div class="wrap">
-        <div class="section-head center" data-reveal>
-          <p class="eyebrow">Near Cupertino</p>
-          <h2 id="areas-heading">Communities We <em>Serve</em></h2>
-          <p>We see clients in person at our Cupertino office and online throughout California, including:</p>
-        </div>
-        <ul class="areas" data-stagger>
-          {geo.map((g) => <li data-reveal><a href={`/${g.id}/`}>{`${g.data.city}, CA`}</a></li>)}
-        </ul>
-      </div>
-    </section>
-  )}
 </BaseLayout>
 
-<style>
-  .areas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
-  .areas li { margin: 0; }
-  .areas a { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.4rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-weight: 600; text-decoration: none; box-shadow: var(--shadow-sm); transition: background-color 0.25s, color 0.25s, transform 0.3s var(--ease); }
-  .areas a::before { content: '📍'; font-size: 0.9em; }
-  .areas a:hover { background: var(--forest); color: #fff; transform: translateY(-3px); }
-</style>

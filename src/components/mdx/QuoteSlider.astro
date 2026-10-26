@@ -1,0 +1,38 @@
+---
+// Horizontal slider for <Quote> cards: native scroll-snap (swipe on touch), with previous/next buttons.
+// Works without JavaScript as a scrollable row; the buttons only scroll it.
+interface Props { label?: string }
+const { label = 'Client testimonials' } = Astro.props;
+---
+<div class="qs" data-qs>
+  <div class="qs-track" role="region" aria-label={label} tabindex="0"><slot /></div>
+  <div class="qs-nav">
+    <button type="button" class="qs-btn" data-dir="-1" aria-label="Previous testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+    <button type="button" class="qs-btn" data-dir="1" aria-label="Next testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-qs]').forEach((box) => {
+    const track = box.querySelector<HTMLElement>('.qs-track')!;
+    box.querySelectorAll<HTMLButtonElement>('.qs-btn').forEach((b) =>
+      b.addEventListener('click', () => {
+        const card = track.firstElementChild as HTMLElement | null;
+        const step = (card?.offsetWidth ?? track.clientWidth) + 24;
+        track.scrollBy({ left: Number(b.dataset.dir) * step, behavior: 'smooth' });
+      }),
+    );
+  });
+</script>
+
+<style>
+  .qs { margin-top: 1.5rem; }
+  .qs-track { display: grid; grid-auto-flow: column; grid-auto-columns: min(100%, 30rem); gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 0; padding: 0.5rem 0.25rem 1.5rem; scrollbar-width: thin; scrollbar-color: var(--rose-300) transparent; }
+  @media (min-width: 64rem) { .qs-track { grid-auto-columns: calc((100% - 3rem) / 2.15); } }
+  .qs-track > :global(*) { scroll-snap-align: start; }
+  .qs-track:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; border-radius: var(--radius); }
+  .qs-nav { display: flex; justify-content: center; gap: 0.75rem; margin-top: 0.5rem; }
+  .qs-btn { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; border: 2px solid var(--forest); background: #fff; color: var(--forest); cursor: pointer; transition: background-color 0.2s, color 0.2s, transform 0.3s var(--ease); }
+  .qs-btn:hover { background: var(--forest); color: #fff; transform: translateY(-2px); }
+  .qs-btn svg { width: 1.3rem; height: 1.3rem; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+</style>

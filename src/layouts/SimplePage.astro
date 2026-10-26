@@ -5,25 +5,26 @@ import Hero from '../components/Hero.astro';
 import SoftHero from '../components/SoftHero.astro';
 import ReadyToBegin from '../components/ReadyToBegin.astro';
 import { mdxComponents } from '../components/mdx';
-import testimonialsBanner from '../assets/wp/2024/05/Testimonials-Banner-1.jpg';
 
 interface Props { entry: CollectionEntry<'pages'> }
 const { entry } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
 const legal = d.group === 'legal';
-const image = entry.id === 'testimonials' ? testimonialsBanner : undefined;
 ---
 <BaseLayout title={d.title} description={d.description} noindex={d.noindex}>
   {d.sections ? (
     <>
       <SoftHero eyebrow="Resources" title={d.h1} />
       <Content components={mdxComponents} />
+      <ReadyToBegin />
     </>
   ) : (
     <>
-      <Hero title={d.h1} ctas={!legal} image={image} />
-      <div class="section">
+      <Hero title={d.h1} ctas={false}>
+        {!legal && <div class="btn-row hero-ask"><a class="btn btn-primary" href="/contact-us/" data-cta="contact">Ask Us a Question</a></div>}
+      </Hero>
+      <div class="section simple-body">
         <article class="wrap-narrow prose">
           <Content components={mdxComponents} />
         </article>
@@ -32,3 +33,8 @@ const image = entry.id === 'testimonials' ? testimonialsBanner : undefined;
     </>
   )}
 </BaseLayout>
+
+<style>
+  .simple-body { padding-top: 0; }
+  .hero-ask { margin-bottom: 0; }
+</style>

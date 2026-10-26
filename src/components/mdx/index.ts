@@ -9,5 +9,7 @@ import YouTube from './YouTube.astro';
 import Section from './Section.astro';
 import CardGrid from './CardGrid.astro';
 import InfoCard from './InfoCard.astro';
+import Quote from './Quote.astro';
+import QuoteSlider from './QuoteSlider.astro';
 
-export const mdxComponents = { Section, CardGrid, InfoCard, Button, ContactForm, CtaPair, Faq, MapEmbed, MentayaWidget, YouTube };
+export const mdxComponents = { Section, CardGrid, InfoCard, Quote, QuoteSlider, Button, ContactForm, CtaPair, Faq, MapEmbed, MentayaWidget, YouTube };

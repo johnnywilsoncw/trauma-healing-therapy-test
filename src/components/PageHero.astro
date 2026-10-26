@@ -7,6 +7,7 @@ import CtaPair from './mdx/CtaPair.astro';
 
 interface Props {
   eyebrow?: string;
+  kicker?: string;
   title: string;
   subtitle?: string;
   image: ImageMetadata;
@@ -15,7 +16,7 @@ interface Props {
   crumbs?: { label: string; href?: string }[];
   size?: 'lg' | 'md';
 }
-const { eyebrow, title, subtitle, image, chips = [], ctas = true, crumbs, size = 'md' } = Astro.props;
+const { eyebrow, kicker, title, subtitle, image, chips = [], ctas = true, crumbs, size = 'md' } = Astro.props;
 ---
 <section class:list={['phero', `phero-${size}`, 'on-dark']}>
   <div class="phero-bg" aria-hidden="true">
@@ -29,6 +30,7 @@ const { eyebrow, title, subtitle, image, chips = [], ctas = true, crumbs, size =
       </nav>
     )}
     {eyebrow && <p class="eyebrow phero-anim" style="--i:0">{eyebrow}</p>}
+    {kicker && <p class="phero-kicker phero-anim" style="--i:0"><span>{kicker}</span></p>}
     <h1 class="phero-anim" style="--i:1" set:html={title} />
     {subtitle && <p class="phero-sub phero-anim" style="--i:2">{subtitle}</p>}
     <div class="phero-anim" style="--i:3"><slot /></div>
@@ -58,6 +60,9 @@ const { eyebrow, title, subtitle, image, chips = [], ctas = true, crumbs, size =
   .phero-inner > * { max-width: 42rem; }
   .phero h1 { color: #fff; margin-bottom: 0.35em; }
   .phero h1 :global(em) { color: var(--gold); }
+  .phero-kicker { display: flex; align-items: center; gap: 1rem; margin: 0 0 0.9rem; font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.4rem); line-height: 1.1; color: #f6d9e1 !important; }
+  .phero-kicker::after { content: ''; flex: 0 0 auto; width: clamp(3rem, 8vw, 6rem); height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--gold), transparent); }
+  .phero-kicker span { background: linear-gradient(90deg, #fff 0%, #f6d9e1 60%, var(--gold) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .phero-sub { font-family: var(--font-display); font-style: italic; font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem); color: #f3dfe5; line-height: 1.35; }
   .phero :global(p) { color: #e3ece7; }
   .phero :global(a:not(.btn)) { color: #fff; }

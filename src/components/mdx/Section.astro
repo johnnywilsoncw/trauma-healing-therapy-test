@@ -1,6 +1,8 @@
 ---
 // Layout band for service-page copy. The copy stays in the MDX file; this only arranges it.
-//   default: text beside a photo (slot "media"), or a centered text column with card-style lists
+//   default: text beside a photo (slot "media"); the photo matches the height of the text.
+//            Without a photo the section is centered: short copy sits on a textured band,
+//            longer copy gets a centered heading and lead, then flows into two columns.
 //   faq:     heading in a sticky left column (slot "aside"), questions on the right
 //   form:    centered heading over a one-row inquiry form
 //   closing: dark centered call to action
@@ -11,9 +13,15 @@ interface Props { variant?: 'default' | 'faq' | 'form' | 'closing' | 'cards'; to
 const { variant = 'default', tone = 'paper', flip = false } = Astro.props;
 const hasMedia = Astro.slots.has('media');
 const hasAside = Astro.slots.has('aside');
+const html = await Astro.slots.render('default');
+// Text-only sections: short copy is centered on a texture, long copy is laid out in columns.
+const words = html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const textOnly = variant === 'default' && !hasMedia;
+const short = textOnly && words <= 170;
+const long = textOnly && !short;
 ---
-<section class:list={['sec', `sec-${variant}`, `tone-${tone}`, { 'has-media': hasMedia && variant === 'default', flip, 'section-dark': tone === 'dark' }]}>
-  {(variant === 'closing' || variant === 'form') && <Lotus class="lotus-mark sec-lotus" aria-hidden="true" />}
+<section class:list={['sec', `sec-${variant}`, `tone-${tone}`, { 'has-media': hasMedia && variant === 'default', flip, 'section-dark': tone === 'dark', 'sec-short': short, 'sec-long': long, texture: short || variant === 'closing' }]}>
+  {(variant === 'closing' || variant === 'form' || short) && <Lotus class="lotus-mark sec-lotus" aria-hidden="true" />}
   <div class="wrap sec-grid">
     {hasMedia && variant === 'default' && (
       <div class="sec-media" data-reveal={flip ? 'left' : 'right'}><slot name="media" /></div>
@@ -21,9 +29,7 @@ const hasAside = Astro.slots.has('aside');
     {variant === 'faq' && hasAside && (
       <div class="sec-aside" data-reveal="left"><slot name="aside" /></div>
     )}
-    <div class="sec-body" data-reveal>
-      <slot />
-    </div>
+    <div class="sec-body" data-reveal><Fragment set:html={html} /></div>
     {variant === 'form' && <div class="sec-formcard" data-reveal><slot name="media" /></div>}
   </div>
 </section>
@@ -38,48 +44,70 @@ const hasAside = Astro.slots.has('aside');
   .sec-grid { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
   .sec-body > :global(:first-child) { margin-top: 0; }
   .sec-body > :global(:last-child) { margin-bottom: 0; }
-  .sec-body :global(h3:not(:first-child)) { margin-top: 1.6em; }
+  .sec-body :global(:is(h2, h3):not(:first-child)) { margin-top: 1.6em; }
 
-  /* text-only without its own heading (continues the section above): centered, lists in two columns */
-  .sec-default:not(.has-media):not(:has(.sec-body > :is(h2, h3):first-child)) .sec-grid { max-width: 56rem; }
-  @media (min-width: 48rem) {
-    .sec-default:not(.has-media):not(:has(.sec-body > :is(h2, h3):first-child)) .sec-body :global(ul) { grid-template-columns: 1fr 1fr; }
+  /* shared: centered heading with a short rose rule */
+  .sec-short .sec-body > :global(:is(h2, h3):first-child),
+  .sec-long .sec-body > :global(:is(h2, h3):first-child) { text-align: center; max-width: 44rem; margin-inline: auto; }
+  .sec-short .sec-body > :global(:is(h2, h3):first-child)::after,
+  .sec-long .sec-body > :global(:is(h2, h3):first-child)::after { content: ''; display: block; width: 3.5rem; height: 3px; border-radius: 3px; background: var(--rose); margin: 1rem auto 0; }
+
+  .sec-short .sec-body > :global(h3:first-child), .sec-long .sec-body > :global(h3:first-child) { font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.65rem); }
+
+  /* short text-only: centered on a textured band */
+  .sec-short .sec-grid { max-width: 48rem; text-align: center; }
+  .sec-short .sec-lotus { color: var(--forest); opacity: 0.05; right: -5rem; bottom: -5rem; }
+  .sec-short .sec-body :global(p) { font-size: 1.08rem; }
+  .sec-short .sec-body :global(.btn-row) { justify-content: center; }
+  .sec-short .sec-body :global(ul) { text-align: left; }
+
+  /* long text-only: centered heading + lead, then two balanced columns; lists span the width */
+  .sec-long .sec-body > :global(p:first-of-type) { max-width: 46rem; margin-inline: auto; text-align: center; font-size: 1.12rem; color: var(--ink); }
+  .sec-long .sec-body :global(.btn-row) { justify-content: center; }
+  @media (min-width: 56rem) {
+    .sec-long .sec-body { columns: 2; column-gap: clamp(2.5rem, 5vw, 4.5rem); column-rule: 1px solid var(--line); }
+    .sec-long .sec-body > :global(:is(h2, h3, h4, ul, ol, .btn-row, figure, .yt, p:first-of-type, .card-grid)) { column-span: all; }
+    .sec-long .sec-body > :global(p:first-of-type) { margin-bottom: 2rem; }
   }
-  /* text-only: editorial two columns, heading on the left */
+
+  /* photo sections: the photo is as tall as the copy (within limits) so short copy never sits beside a tall image */
   @media (min-width: 60rem) {
-    .sec-default:not(.has-media):has(.sec-body > :is(h2, h3):first-child) .sec-body { display: grid; grid-template-columns: 0.85fr 1.15fr; column-gap: clamp(2.5rem, 5vw, 5rem); align-items: start; }
-    .sec-default:not(.has-media):has(.sec-body > :is(h2, h3):first-child) .sec-body > :global(*) { grid-column: 2; }
-    .sec-default:not(.has-media):has(.sec-body > :is(h2, h3):first-child) .sec-body > :global(:is(h2, h3):first-child) { grid-column: 1; grid-row: 1 / span 40; position: sticky; top: 7rem; margin: 0; }
-    .sec-default:not(.has-media):has(.sec-body > :is(h2, h3):first-child) .sec-body > :global(:is(h2, h3):first-child)::after { content: ''; display: block; width: 4rem; height: 4px; border-radius: 4px; background: var(--rose); margin-top: 1.5rem; }
-  }
-  @media (min-width: 60rem) {
-    .has-media .sec-grid { grid-template-columns: 1fr 1.1fr; }
+    .has-media .sec-grid { grid-template-columns: 1fr 1.1fr; align-items: stretch; }
     .has-media.flip .sec-grid { grid-template-columns: 1.1fr 1fr; }
     .has-media.flip .sec-media { order: -1; }
-    .has-media .sec-media { position: sticky; top: 7rem; align-self: start; }
+    .has-media .sec-body { align-self: center; }
   }
   .sec-media { position: relative; order: 2; }
   @media (max-width: 59.99rem) { .sec-media { order: -1; } }
   .sec-media :global(p) { margin: 0; position: relative; }
+  @media (min-width: 60rem) {
+    .sec-media > :global(div) { height: 100%; }
+    .sec-media :global(p:has(> img)) { position: sticky; top: 7rem; height: min(100%, 34rem); min-height: 20rem; }
+    .sec-media :global(p > img) { height: 100% !important; aspect-ratio: auto !important; max-height: none !important; }
+  }
   .sec-media :global(img) {
     position: relative; z-index: 1; display: block; width: 100%; height: auto;
-    aspect-ratio: 4 / 5; max-height: 38rem; object-fit: cover; object-position: center 30%;
+    aspect-ratio: 4 / 5; max-height: 34rem; object-fit: cover; object-position: center 30%;
     border-radius: 200px 200px var(--radius-lg) var(--radius-lg);
     box-shadow: var(--shadow-lg);
   }
   .flip .sec-media :global(img) { border-radius: var(--radius-lg) var(--radius-lg) 200px 200px; }
-  .sec-media::before {
+  .sec-media :global(p:has(> img))::before {
     content: ''; position: absolute; z-index: 0; inset: 2.2rem -1.4rem -1.4rem 2.2rem;
     border-radius: 200px 200px var(--radius-lg) var(--radius-lg);
     background: linear-gradient(140deg, var(--sage), var(--rose-50));
   }
-  .flip .sec-media::before { inset: 2.2rem 2.2rem -1.4rem -1.4rem; border-radius: var(--radius-lg) var(--radius-lg) 200px 200px; }
-  .sec-media:has(.mentaya)::before { display: none; }
-  .tone-tint .sec-media::before { background: linear-gradient(140deg, #fff, var(--rose-50)); }
+  .flip .sec-media :global(p:has(> img))::before { inset: 2.2rem 2.2rem -1.4rem -1.4rem; border-radius: var(--radius-lg) var(--radius-lg) 200px 200px; }
+  .tone-tint .sec-media :global(p:has(> img))::before { background: linear-gradient(140deg, #fff, var(--rose-50)); }
+  .sec-media :global(.yt) { margin: 0; }
+  .sec-media :global(.yt-frame) { border: 6px solid #fff; box-shadow: var(--shadow-lg); }
   @media (max-width: 59.99rem) {
     .sec-media :global(img) { aspect-ratio: 16 / 11; border-radius: var(--radius-lg) !important; }
-    .sec-media::before { display: none; }
+    .sec-media :global(p:has(> img))::before { display: none; }
   }
+
+  /* linked badges (e.g. Psychology Today verified) stay small */
+  .sec-body :global(p > a > img) { display: block; width: auto; max-width: 11rem; height: auto; }
 
   /* other photos inside the text column */
   .sec-body :global(p > img) { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-lg); margin: 1.5rem 0; box-shadow: var(--shadow); }
@@ -97,8 +125,15 @@ const hasAside = Astro.slots.has('aside');
     background: var(--forest) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 62% no-repeat;
   }
   .tone-tint .sec-body :global(ul > li) { background: #fff; }
-  
-  .sec-body :global(ol) { padding-left: 1.4em; }
+  @media (min-width: 48rem) { :is(.sec-long, .sec-short) .sec-body :global(ul) { grid-template-columns: 1fr 1fr; } }
+
+  /* numbered lists become numbered cards */
+  .sec-body :global(ol) { list-style: none; padding: 0; margin-block: 1.75rem; display: grid; gap: 1rem; counter-reset: step; text-align: left; }
+  .sec-body :global(ol > li) { position: relative; margin: 0; padding: 1.25rem 1.25rem 1.25rem 4rem; background: #fff; border-radius: var(--radius); border: 1px solid rgb(15 42 33 / 0.08); box-shadow: var(--shadow-sm); counter-increment: step; transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease); }
+  .sec-body :global(ol > li:hover) { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .sec-body :global(ol > li)::before { content: counter(step); position: absolute; left: 1.1rem; top: 1.1rem; display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border-radius: 50%; font-family: var(--font-display); color: #fff; background: var(--rose); }
+  @media (min-width: 48rem) { :is(.sec-long, .sec-short) .sec-body :global(ol) { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 64rem) { .sec-long .sec-body :global(ol) { grid-template-columns: repeat(3, 1fr); } }
 
   /* FAQ */
   @media (min-width: 60rem) {
@@ -123,6 +158,8 @@ const hasAside = Astro.slots.has('aside');
 
   .sec-body :global(.btn-row) { margin-top: 2rem; }
   .sec-cards .sec-grid { display: block; }
-  .sec-cards .sec-body > :global(h2) { margin-bottom: 1rem; }
+  .sec-cards .sec-body :global(.btn-row) { justify-content: center; }
+  .sec-cards .sec-body > :global(h2) { margin-bottom: 1rem; text-align: center; }
+  .sec-cards .sec-body > :global(h2 + p) { text-align: center; max-width: 46rem; margin-inline: auto; }
   .sec-default.has-media .sec-media :global(.mentaya) { margin: 0; position: relative; z-index: 1; }
 </style>

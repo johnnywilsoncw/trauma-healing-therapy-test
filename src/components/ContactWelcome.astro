@@ -1,35 +1,39 @@
 ---
 // Top of /contact-us/ and the two office pages (wording from the live site):
-// the welcome and the form first, the three ways to connect below, then the video.
+// photo banner with the H1, then the welcome copy and intro video beside the form,
+// the three ways to connect, and a textured band with the coordinators and the office walkthrough.
 import { Image } from 'astro:assets';
+import PageHero from './PageHero.astro';
 import YouTube from './mdx/YouTube.astro';
 import ContactForm from './mdx/ContactForm.astro';
 import Lotus from '../assets/lotus.svg';
 import { practice } from '../data/site';
 import coordinators from '../assets/wp/2026/07/CW-coordinators.jpg';
+import banner from '../assets/wp/2025/05/CW-homepage-banner.jpg';
 
-interface Props { title: string; subline?: string; video?: string; matchingCopy?: 'team' | 'snow' }
-const { title, subline, video, matchingCopy = 'team' } = Astro.props;
+interface Props { title: string; subline?: string; video?: string; officeVideo?: string; matchingCopy?: 'team' | 'snow' }
+const { title, subline, video, officeVideo, matchingCopy = 'team' } = Astro.props;
 const icons = {
   message: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
   calendar: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
   phone: 'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z',
 };
 ---
-<section class="cw-top" aria-labelledby="cw-title">
+<PageHero title={title} subtitle={subline} image={banner} ctas={false} />
+
+<section class="cw-top" aria-labelledby="cw-heading">
   <span class="blob b1" aria-hidden="true"></span>
   <span class="blob b2" aria-hidden="true"></span>
   <Lotus class="cw-lotus" aria-hidden="true" />
   <div class="wrap cw-grid">
-    <div class="cw-copy">
-      <h1 id="cw-title" class="eyebrow cw-h1">{title}</h1>
-      {subline && <p class="cw-sub">{subline}</p>}
-      <h2 class="cw-heading">Ready to begin your <em>healing journey?</em></h2>
+    <div class="cw-copy" data-reveal="left">
+      <h2 id="cw-heading" class="cw-heading">Ready to begin your <em>healing journey?</em></h2>
       <p class="cw-welcome">Welcome — we’re so glad you’re here.</p>
       <p class="lede">Reaching out for support takes courage, and healing is absolutely possible. You don’t have to go through this alone. We would be honored to walk alongside you and support you on your healing journey.</p>
       <p>You don’t need to have everything figured out to begin. We’re here to support you every step of the way. Reach out today and take your first step toward healing.</p>
+      {video && <div class="cw-video"><YouTube id={video} title="Welcome to Trauma Healing Therapy" /></div>}
     </div>
-    <div id="message-form" class="cw-form">
+    <div id="message-form" class="cw-form" data-reveal="right">
       <ContactForm heading="Send us a message" layout="stacked" />
     </div>
   </div>
@@ -62,13 +66,22 @@ const icons = {
   </div>
 </section>
 
-<section class="section section-tint team-video" aria-labelledby="coord-heading">
-  <div class="wrap tv-grid">
-    {video && <div data-reveal="left"><YouTube id={video} title="Welcome to Trauma Healing Therapy" /></div>}
-    <figure class="coord" data-reveal="right">
-      <Image src={coordinators} alt="Steph and Snow, Trauma Healing Therapy care coordinators" width={720} widths={[360, 720]} sizes="(min-width: 60rem) 34rem, 90vw" />
-      <figcaption id="coord-heading">Meet Snow and Steph, Your Care Coordinators</figcaption>
-    </figure>
+<section class:list={['section', 'section-sand', 'texture', 'team-video', { solo: !officeVideo }]} aria-labelledby="coord-heading">
+  <div class="wrap">
+    <div class="section-head center" data-reveal>
+      <p class="eyebrow">Your care team</p>
+      <h2 id="coord-heading">Meet Snow and Steph, <em>Your Care Coordinators</em></h2>
+    </div>
+    <div class="tv-grid">
+      <figure class="coord" data-reveal="left">
+        <Image src={coordinators} alt="Steph and Snow, Trauma Healing Therapy care coordinators" width={720} widths={[360, 720]} sizes="(min-width: 60rem) 34rem, 90vw" />
+      </figure>
+      {officeVideo && (
+        <div class="tour" data-reveal="right">
+          <YouTube id={officeVideo} title="A look at our Cupertino office" />
+        </div>
+      )}
+    </div>
   </div>
 </section>
 
@@ -80,8 +93,6 @@ const icons = {
   .cw-lotus { position: absolute; z-index: -1; left: 38%; bottom: -3rem; width: 16rem; height: auto; color: var(--forest); opacity: 0.05; }
   .cw-grid { display: grid; gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
   @media (min-width: 62rem) { .cw-grid { grid-template-columns: 1fr 1.05fr; } }
-  .cw-h1 { margin-bottom: 0.5rem; }
-  .cw-sub { font-weight: 650; color: var(--forest); margin-bottom: 1rem; }
   .cw-heading { margin-bottom: 0.3em; }
   .cw-welcome { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; color: var(--rose); }
   .cw-form :global(.contact-form) { margin: 0; box-shadow: var(--shadow-lg); }
@@ -102,10 +113,13 @@ const icons = {
   .way-featured::after { color: rgb(255 255 255 / 0.12); }
   .way-featured .w-icon { background: rgb(255 255 255 / 0.12); color: var(--gold); }
   .way-featured .btn-primary { --btn-bg: #fff; --btn-fg: var(--forest-700); --btn-bd: #fff; margin-top: auto; }
-  .tv-grid { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+  .cw-video { margin-top: 1.75rem; }
+  .cw-video :global(.yt) { margin: 0; }
+  .tv-grid { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
   @media (min-width: 60rem) { .tv-grid { grid-template-columns: 1fr 1fr; } }
+  .solo .tv-grid { max-width: 40rem; margin-inline: auto; grid-template-columns: 1fr; }
   .tv-grid :global(.yt) { margin: 0; }
   .coord { margin: 0; }
   .coord :global(img) { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 6px solid #fff; }
-  .coord figcaption { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--rose); margin-top: 0.75rem; text-align: center; }
+  .tour :global(.yt-frame) { border: 6px solid #fff; box-shadow: var(--shadow-lg); }
 </style>

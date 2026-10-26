@@ -19,7 +19,6 @@ const authorName = clinicianName(author);
 const url = `${SITE_URL}/${entry.id}/`;
 const share = d.heroImage ? await getImage({ src: d.heroImage, width: 1200, format: 'jpg' }) : undefined;
 const it = d.lang === 'it';
-const fmt = (date: Date) => date.toLocaleDateString(it ? 'it-IT' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 const words = (entry.body ?? '').split(/\s+/).length;
 const minutes = Math.max(1, Math.round(words / 230));
 const more = (await getPosts()).filter((p) => p.id !== entry.id).slice(0, 3);
@@ -43,7 +42,7 @@ const more = (await getPosts()).filter((p) => p.id !== entry.id).slice(0, 3);
             <Image class="avatar" src={author.data.photo} alt="" width={96} height={96} />
             <p>
               {it ? 'Di' : 'By'} <a href={`/${author.data.path}/`}>{authorName}</a><br />
-              <span class="meta"><time datetime={d.published.toISOString().slice(0, 10)}>{fmt(d.published)}</time> · {minutes} {it ? 'min di lettura' : 'min read'}</span>
+              <span class="meta">{minutes} {it ? 'min di lettura' : 'min read'}</span>
             </p>
           </div>
         </div>

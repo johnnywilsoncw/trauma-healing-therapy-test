@@ -3,7 +3,6 @@
 import { render, getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import ContactWelcome from '../components/ContactWelcome.astro';
-import YouTube from '../components/mdx/YouTube.astro';
 import MapEmbed from '../components/mdx/MapEmbed.astro';
 import { mdxComponents } from '../components/mdx';
 import { offices, fullAddress, practice, type OfficeId } from '../data/site';
@@ -20,7 +19,7 @@ const { Content } = await render(entry);
 const geo = id === 'cupertino' ? (await getCollection('geo')).filter((g) => !g.data.draft).sort((a, b) => a.data.city.localeCompare(b.data.city)) : [];
 ---
 <BaseLayout title={d.title} description={d.description} schema={[officeSchema(id)]}>
-  <ContactWelcome title={d.h1} subline={`${fullAddress(id)} (${o.availability})`}video={d.welcomeVideo} matchingCopy={id === 'san-francisco' ? 'snow' : 'team'} />
+  <ContactWelcome title={d.h1} subline={`${fullAddress(id)} (${o.availability})`} video={d.welcomeVideo} officeVideo={d.officeVideo} matchingCopy={id === 'san-francisco' ? 'snow' : 'team'} />
 
   <section class="section section-tint" aria-labelledby="office-heading">
     <div class="wrap office-grid">
@@ -30,7 +29,6 @@ const geo = id === 'cupertino' ? (await getCollection('geo')).filter((g) => !g.d
         <p><strong>Hours</strong><br />{o.hours}</p>
         <p><strong>Phone</strong><br /><a href={practice.phoneHref}>{practice.phone}</a></p>
         {!o.inPerson && <p class="online-note">Appointments for this office are online only. In-person sessions are available at our Cupertino office.</p>}
-        {d.officeVideo && <YouTube id={d.officeVideo} title="A look at our Cupertino office" />}
       </div>
       <MapEmbed office={id} />
     </div>
@@ -44,11 +42,14 @@ const geo = id === 'cupertino' ? (await getCollection('geo')).filter((g) => !g.d
   </section>
 
   {geo.length > 0 && (
-    <section class="section section-sand" aria-labelledby="areas-heading">
+    <section class="section section-sand texture" aria-labelledby="areas-heading">
       <div class="wrap">
-        <h2 id="areas-heading">Communities We Serve From Our Cupertino Office</h2>
-        <ul class="areas">
-          {geo.map((g) => <li><a href={`/${g.id}/`}>{`Therapy for residents in ${g.data.city}, CA`}</a></li>)}
+        <div class="section-head center" data-reveal>
+          <p class="eyebrow">Near Cupertino</p>
+          <h2 id="areas-heading">Communities We Serve From Our <em>Cupertino Office</em></h2>
+        </div>
+        <ul class="areas" data-stagger>
+          {geo.map((g) => <li data-reveal><a href={`/${g.id}/`}>{`Therapy for residents in ${g.data.city}, CA`}</a></li>)}
         </ul>
       </div>
     </section>
@@ -59,5 +60,9 @@ const geo = id === 'cupertino' ? (await getCollection('geo')).filter((g) => !g.d
   .office-grid { display: grid; gap: 2rem; align-items: start; }
   @media (min-width: 56rem) { .office-grid { grid-template-columns: 1fr 1.2fr; } }
   .online-note { background: #fff; border-left: 4px solid var(--rose); padding: 0.75rem 1rem; border-radius: 8px; }
-  .areas { display: grid; gap: 0.5rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); padding-left: 1.2em; }
+  .areas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
+  .areas li { margin: 0; }
+  .areas a { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.4rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-weight: 600; text-decoration: none; box-shadow: var(--shadow-sm); transition: background-color 0.25s, color 0.25s, transform 0.3s var(--ease); }
+  .areas a::before { content: '📍'; font-size: 0.9em; }
+  .areas a:hover { background: var(--forest); color: #fff; transform: translateY(-3px); }
 </style>

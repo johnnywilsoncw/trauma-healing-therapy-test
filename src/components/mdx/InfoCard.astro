@@ -1,36 +1,48 @@
 ---
-// A titled card for MDX. Optional `price` shows a large figure (e.g. testing fees).
-interface Props { title: string; subtitle?: string; price?: string; icon?: 'heart' | 'card' | 'clock' | 'fee'; wide?: boolean }
-const { title, subtitle, price, icon, wide = false } = Astro.props;
+// A titled card for MDX. `num` shows a numbered badge instead of an icon (e.g. "Why choose" reasons).
+// `wide` spans the whole grid; its list (if any) is laid out in columns.
+interface Props { title: string; subtitle?: string; icon?: 'heart' | 'card' | 'clock' | 'fee' | 'clipboard'; num?: number; wide?: boolean }
+const { title, subtitle, icon, num, wide = false } = Astro.props;
 const paths = {
   heart: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z',
   card: 'M2 5h20v14H2zM2 10h20M6 15h4',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
   fee: 'M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6',
+  clipboard: 'M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1zM8 5H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 12l2 2 4-4M9 17h6',
 };
 ---
-<article class:list={['info-card', { wide }]} data-reveal>
-  {icon && <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={paths[icon]} /></svg></span>}
-  <h3 class="ic-title">{title}</h3>
-  {subtitle && <p class="ic-sub">{subtitle}</p>}
-  {price && <p class="ic-price">{price}</p>}
-  <div class="ic-body"><slot /></div>
+<article class:list={['info-card', { wide, numbered: num }]} data-reveal>
+  {num ? <span class="ic ic-num" aria-hidden="true">{num}</span>
+    : icon && <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={paths[icon]} /></svg></span>}
+  <div class="ic-main">
+    <h3 class="ic-title">{title}</h3>
+    {subtitle && <p class="ic-sub">{subtitle}</p>}
+    <div class="ic-body"><slot /></div>
+  </div>
 </article>
 
 <style>
-  .info-card { position: relative; display: flex; flex-direction: column; padding: 1.75rem 1.6rem; background: #fff; border: 1px solid rgb(15 42 33 / 0.08); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+  .info-card { position: relative; display: flex; flex-direction: column; padding: 1.75rem 1.6rem; background: #fff; border: 1px solid rgb(15 42 33 / 0.08); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); text-align: left; }
   .info-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
   .wide { grid-column: 1 / -1; }
+  @media (min-width: 48rem) { .wide { flex-direction: row; gap: 1.5rem; align-items: flex-start; } .wide .ic { flex: none; margin-bottom: 0; } .wide .ic-main { flex: 1; } }
   .ic { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 1rem; color: var(--rose); background: var(--rose-50); margin-bottom: 1rem; }
   .ic svg { width: 1.4rem; height: 1.4rem; }
+  .ic-num { border-radius: 50%; font-family: var(--font-display); font-size: 1.3rem; color: #fff; background: linear-gradient(140deg, var(--rose), #8d2a48); box-shadow: 0 8px 18px -8px rgb(176 54 90 / 0.7); }
   .ic-title { margin: 0 0 0.25rem !important; }
   .ic-sub { font-family: var(--font-display); font-style: italic; color: var(--rose); margin: 0 0 0.75rem; }
-  .ic-price { font-family: var(--font-display); font-size: 2.2rem; line-height: 1; color: var(--forest); margin: 0.25rem 0 0.75rem; }
-  .ic-body { font-size: 0.97rem; color: var(--ink-soft); }
+  .ic-body { font-size: 0.97rem; color: var(--ink-soft); margin-top: 0.5rem; }
   .ic-body :global(> :last-child) { margin-bottom: 0; }
+  .ic-body :global(.btn-row) { margin: 1.25rem 0 0; justify-content: flex-start !important; }
+  .wide:not(.numbered) { background: linear-gradient(120deg, #fff 0%, var(--forest-50) 100%); }
   /* fee lines: "Item: $price" list items become rows */
   .ic-body :global(ul) { list-style: none; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0; }
   .ic-body :global(li) { margin: 0; padding: 0.75rem 0 !important; border: 0 !important; border-bottom: 1px dashed var(--line) !important; color: var(--ink); background: none !important; box-shadow: none !important; border-radius: 0 !important; transform: none !important; }
   .ic-body :global(li:last-child) { border-bottom: 0 !important; }
   .ic-body :global(li)::before { display: none !important; }
+  /* a wide card's list sits in columns of soft panels */
+  @media (min-width: 48rem) {
+    .wide .ic-body :global(ul) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .wide .ic-body :global(li) { padding: 1rem 1.1rem !important; border: 0 !important; border-radius: var(--radius) !important; background: var(--forest-50) !important; font-size: 0.93rem; }
+  }
 </style>
