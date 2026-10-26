@@ -1,0 +1,21 @@
+---
+// Archive-style listing kept for an existing URL. Excluded from the index and the sitemap.
+import BaseLayout from './BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import PostCard from '../components/PostCard.astro';
+import ReadyToBegin from '../components/ReadyToBegin.astro';
+import { getPosts } from '../lib/content';
+
+interface Props { entry: { slug: string; title: string; services: string[] } }
+const { entry } = Astro.props;
+const posts = (await getPosts()).filter((p) => entry.services.includes(p.data.category.id));
+---
+<BaseLayout title={`${entry.title} | Trauma Healing Therapy`} noindex>
+  <Hero title={entry.title} ctas={false} />
+  <section class="section">
+    <div class="wrap">
+      {posts.length ? <ul class="grid-cards">{posts.map((p) => <PostCard post={p} headingLevel="h2" />)}</ul> : <p>New articles are coming soon. In the meantime, visit our <a href="/blog/">blog</a>.</p>}
+    </div>
+  </section>
+  <ReadyToBegin />
+</BaseLayout>

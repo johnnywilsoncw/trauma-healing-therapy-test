@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SoftHero from '../components/SoftHero.astro';
+import ContactWelcome from '../components/ContactWelcome.astro';
+import LocationSection from '../components/LocationSection.astro';
+import { officeSchema } from '../lib/schema';
+import coordinators from '../assets/wp/2026/07/CW-coordinators.jpg';
+
+const geo = (await getCollection('geo')).filter((g) => !g.data.draft).sort((a, b) => a.data.city.localeCompare(b.data.city));
+---
+<BaseLayout
+  title="Contact Us | Cupertino & San Francisco, CA | Trauma Healing Therapy"
+  description="Contact Trauma Healing Therapy: send a message, book a free matching consultation, or call (408) 389-4075. In person in Cupertino and online across California."
+  schema={[officeSchema('cupertino'), officeSchema('san-francisco')]}
+>
+  <SoftHero eyebrow="Contact" title="Contact <em>Us</em>" lede="Welcome — we’re so glad you’re here.">
+    <figure class="coord" data-reveal>
+      <Image src={coordinators} alt="Steph and Snow, Trauma Healing Therapy care coordinators" width={720} widths={[360, 720]} sizes="(min-width: 60rem) 30rem, 90vw" loading="eager" />
+      <figcaption>Meet Snow and Steph, Your Care Coordinators</figcaption>
+    </figure>
+  </SoftHero>
+
+  <ContactWelcome video="pDLziuBkx3Q" />
+
+  <LocationSection />
+
+  {geo.length > 0 && (
+    <section class="section areas-band" aria-labelledby="areas-heading">
+      <div class="wrap">
+        <div class="section-head center" data-reveal>
+          <p class="eyebrow">Near Cupertino</p>
+          <h2 id="areas-heading">Communities We <em>Serve</em></h2>
+          <p>We see clients in person at our Cupertino office and online throughout California, including:</p>
+        </div>
+        <ul class="areas" data-stagger>
+          {geo.map((g) => <li data-reveal><a href={`/${g.id}/`}>{`${g.data.city}, CA`}</a></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .coord { margin: 2rem 0 0; max-width: 30rem; }
+  .coord :global(img) { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 6px solid #fff; }
+  .coord figcaption { font-family: var(--font-display); font-style: italic; color: var(--rose); margin-top: 0.75rem; }
+  @media (min-width: 60rem) {
+    :global(.shero:has(.coord)) .coord { position: absolute; right: var(--gutter); top: 50%; transform: translateY(-58%) rotate(2deg); width: min(32vw, 27rem); margin: 0; }
+    :global(.shero:has(.coord)) { min-height: 38rem; display: flex; align-items: center; padding-bottom: 8rem; }
+    :global(.shero:has(.coord) .shero-grid) { width: min(100% - 2 * var(--gutter), var(--wrap)); }
+    :global(.shero:has(.coord) .shero-copy) { max-width: 30rem; }
+  }
+  .areas { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
+  .areas li { margin: 0; }
+  .areas a { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.4rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-weight: 600; text-decoration: none; box-shadow: var(--shadow-sm); transition: background-color 0.25s, color 0.25s, transform 0.3s var(--ease); }
+  .areas a::before { content: '📍'; font-size: 0.9em; }
+  .areas a:hover { background: var(--forest); color: #fff; transform: translateY(-3px); }
+</style>

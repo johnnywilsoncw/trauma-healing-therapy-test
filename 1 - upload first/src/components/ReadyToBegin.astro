@@ -1,0 +1,48 @@
+---
+// Closing contact block used across the live site ("Ready to begin your healing journey?").
+import ContactForm from './mdx/ContactForm.astro';
+import Lotus from '../assets/lotus.svg';
+import { practice } from '../data/site';
+interface Props { intro?: string }
+const { intro } = Astro.props;
+---
+<section class="section section-dark ready" aria-labelledby="ready-heading">
+  <Lotus class="lotus-mark ready-lotus" aria-hidden="true" />
+  <div class="wrap ready-grid">
+    <div data-reveal="left">
+      <p class="eyebrow">Get started</p>
+      <h2 id="ready-heading">Ready to begin your <em>healing journey?</em></h2>
+      {intro && intro.split(/\n\n+/).map((p) => <p>{p}</p>)}
+      <p>For the fastest way to connect you can:</p>
+      <ol class="steps">
+        <li>
+          <span class="n" aria-hidden="true">1</span>
+          <div><strong>Give Us A Call</strong><a class="step-link" href={practice.phoneHref}>Call Us {practice.phone}</a></div>
+        </li>
+        <li>
+          <span class="n" aria-hidden="true">2</span>
+          <div><strong>Send Us a Quick Message:</strong> Please fill out the form to contact us with any questions, request a free consultation, or to make an appointment request.</div>
+        </li>
+        <li>
+          <span class="n" aria-hidden="true">3</span>
+          <div><strong>Schedule A Free Call with Our Client Care Team</strong><a class="btn btn-primary" href={practice.bookingUrl} data-cta="consultation">Book A Free Consult</a></div>
+        </li>
+      </ol>
+    </div>
+    <div data-reveal="zoom"><ContactForm compact /></div>
+  </div>
+</section>
+
+<style>
+  .ready-lotus { right: -5rem; top: -4rem; color: #fff; opacity: 0.06; }
+  .ready-grid { display: grid; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+  @media (min-width: 62rem) { .ready-grid { grid-template-columns: 0.95fr 1.05fr; } }
+  .steps { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 1.1rem; }
+  .steps li { display: grid; grid-template-columns: 2.6rem 1fr; gap: 1rem; margin: 0; align-items: start; }
+  .n { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; font-family: var(--font-display); font-size: 1.2rem; color: var(--forest-900); background: var(--gold); }
+  .steps strong { color: #fff; }
+  .step-link { display: block; width: fit-content; margin-top: 0.3rem; font-family: var(--font-display); font-size: 1.35rem; text-decoration: none; }
+  .step-link:hover { color: var(--gold) !important; }
+  .steps .btn { display: flex; width: fit-content; margin-top: 0.75rem; }
+  .ready-grid :global(.contact-form) { margin: 0; box-shadow: var(--shadow-lg); }
+</style>

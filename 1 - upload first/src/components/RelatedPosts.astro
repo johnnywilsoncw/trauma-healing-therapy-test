@@ -1,0 +1,19 @@
+---
+// Filtered by the post's explicit category (a service ID). Renders nothing when empty.
+import PostCard from './PostCard.astro';
+import { postsForService } from '../lib/content';
+interface Props { serviceId: string; heading?: string }
+const { serviceId, heading = 'From Our Blog' } = Astro.props;
+const posts = await postsForService(serviceId, 3);
+---
+{posts.length > 0 && (
+  <section class="section section-sand" aria-labelledby={`posts-${serviceId}`}>
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Keep reading</p>
+        <h2 id={`posts-${serviceId}`}>{heading}</h2>
+      </div>
+      <ul class="grid-cards">{posts.map((p, i) => <PostCard post={p} featured={posts.length === 1 && i === 0} />)}</ul>
+    </div>
+  </section>
+)}

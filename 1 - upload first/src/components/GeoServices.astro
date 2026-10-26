@@ -1,0 +1,14 @@
+---
+// Used inside geo-page MDX: <GeoServices city="Sunnyvale" />
+import ServiceGrid from './ServiceGrid.astro';
+interface Props { city: string }
+---
+<section class="wide geo-services" aria-labelledby="geo-services-heading">
+  <h2 id="geo-services-heading">Our Specialties</h2>
+  <ServiceGrid suffix={` in ${Astro.props.city}`} />
+</section>
+
+<style>
+  .geo-services { margin: 3rem 0; padding: clamp(1.5rem, 4vw, 2.5rem); background: var(--sand); border-radius: var(--radius-lg); }
+  .geo-services :global(ul) { padding: 0; }
+</style>

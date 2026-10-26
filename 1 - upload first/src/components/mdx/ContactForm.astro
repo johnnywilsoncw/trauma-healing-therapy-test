@@ -1,0 +1,125 @@
+---
+// Simple inquiry form. The backend is intentionally NOT chosen yet: set PUBLIC_FORM_ENDPOINT
+// to an approved provider's POST endpoint (for example a HIPAA-appropriate form service).
+// Until then the form renders for preview, submission is disabled, and visitors are
+// pointed to the phone number and booking link. No success message is ever faked.
+import { practice, FORM_ENDPOINT } from '../../data/site';
+
+interface Props { heading?: string; compact?: boolean }
+const { heading, compact = false } = Astro.props;
+const uid = `cf-${Math.random().toString(36).slice(2, 8)}`;
+const connected = Boolean(FORM_ENDPOINT);
+---
+<div class:list={['contact-form', { compact }]}>
+  {heading && <h2 class="cf-heading">{heading}</h2>}
+  <form
+    method="post"
+    action={FORM_ENDPOINT ?? '#'}
+    novalidate
+    data-contact-form
+    data-connected={connected ? 'true' : 'false'}
+    aria-describedby={`${uid}-privacy`}
+  >
+    <div class="cf-grid">
+      <div class="field">
+        <label for={`${uid}-name`}>Name <span aria-hidden="true">*</span></label>
+        <input id={`${uid}-name`} name="name" type="text" autocomplete="name" required aria-describedby={`${uid}-name-err`} />
+        <p class="err" id={`${uid}-name-err`} hidden>Please enter your name.</p>
+      </div>
+      <div class="field">
+        <label for={`${uid}-email`}>Email Address <span aria-hidden="true">*</span></label>
+        <input id={`${uid}-email`} name="email" type="email" autocomplete="email" required aria-describedby={`${uid}-email-err`} />
+        <p class="err" id={`${uid}-email-err`} hidden>Please enter a valid email address.</p>
+      </div>
+      <div class="field">
+        <label for={`${uid}-phone`}>Phone Number <span class="opt">(optional)</span></label>
+        <input id={`${uid}-phone`} name="phone" type="tel" autocomplete="tel" />
+      </div>
+      <div class="field">
+        <label for={`${uid}-source`}>How did you hear about us? <span class="opt">(optional)</span></label>
+        <input id={`${uid}-source`} name="source" type="text" />
+      </div>
+      <div class="field field-full">
+        <label for={`${uid}-message`}>Message <span aria-hidden="true">*</span></label>
+        <textarea id={`${uid}-message`} name="message" rows="4" required aria-describedby={`${uid}-message-err`}></textarea>
+        <p class="err" id={`${uid}-message-err`} hidden>Please add a brief message.</p>
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label for={`${uid}-website`}>Leave this field empty</label>
+        <input id={`${uid}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+    </div>
+    <p class="cf-privacy" id={`${uid}-privacy`}>
+      Please keep this message brief and avoid sharing detailed health information. {practice.responseTime}
+      This form is not for emergencies. If you are in crisis, call 911 or call or text 988.
+    </p>
+    {connected ? (
+      <button class="btn btn-primary" type="submit">Send Message</button>
+    ) : (
+      <p class="cf-offline" role="note">
+        Online messages are not connected yet. Please call <a href={practice.phoneHref}>{practice.phone}</a> or
+        <a href={practice.bookingUrl}>book a free consultation</a>.
+      </p>
+    )}
+    <p class="cf-status" role="status" aria-live="polite"></p>
+  </form>
+  <p class="cf-oon">
+    We’re an out-of-network provider, but many clients are eligible for OON reimbursement—check your benefits
+    <a href={practice.mentayaUrl} rel="noopener"><strong>HERE</strong><span class="visually-hidden"> (Mentaya benefits check)</span></a>
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-contact-form]').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.cf-status')!;
+    const validate = () => {
+      let firstBad: HTMLInputElement | HTMLTextAreaElement | null = null;
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]').forEach((el) => {
+        const bad = !el.value.trim() || (el.type === 'email' && !el.validity.valid);
+        el.setAttribute('aria-invalid', String(bad));
+        const err = document.getElementById(`${el.id}-err`);
+        if (err) err.hidden = !bad;
+        if (bad && !firstBad) firstBad = el;
+      });
+      (firstBad as HTMLElement | null)?.focus();
+      return !firstBad;
+    };
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (form.dataset.connected !== 'true') return;
+      if (!validate()) return;
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]');
+      button?.setAttribute('disabled', '');
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        status.textContent = 'Thank you for reaching out! Our team will be with you shortly.';
+      } catch {
+        status.textContent = 'Sorry, your message could not be sent. Please call us or try again.';
+      } finally {
+        button?.removeAttribute('disabled');
+      }
+    });
+  });
+</script>
+
+<style>
+  .contact-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(1.25rem, 3vw, 2rem); box-shadow: var(--shadow); margin: 2rem 0; max-width: 46rem; color: var(--ink); }
+  .cf-heading { font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.9rem); margin-top: 0 !important; }
+  .cf-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  @media (min-width: 40rem) { .cf-grid { grid-template-columns: 1fr 1fr; } .field-full { grid-column: 1 / -1; } }
+  .field label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .opt { font-weight: 400; color: var(--ink-soft); }
+  .field input, .field textarea { width: 100%; font: inherit; padding: 0.7rem 0.8rem; border: 1px solid #76887f; border-radius: 10px; background: var(--paper); color: var(--ink); }
+  .field input:focus-visible, .field textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+  [aria-invalid='true'] { border-color: #a3263f !important; }
+  .err { color: #a3263f; font-size: 0.9rem; margin: 0.3rem 0 0; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .cf-privacy { font-size: 0.88rem; color: var(--ink-soft); margin: 1rem 0; }
+  .cf-offline { background: var(--rose-50); border-left: 4px solid var(--rose); padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.95rem; }
+  .cf-status:empty { display: none; }
+  .cf-status { margin-top: 1rem; font-weight: 600; }
+  .cf-oon { font-size: 0.92rem; margin: 1.25rem 0 0; color: var(--ink-soft); }
+</style>

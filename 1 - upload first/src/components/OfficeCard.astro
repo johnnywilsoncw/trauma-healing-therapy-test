@@ -1,0 +1,27 @@
+---
+// Used inside geo-page MDX: <OfficeCard city="Sunnyvale" intro="..." />
+// Shows the real Cupertino office and states plainly that the geo area has no office.
+import MapEmbed from './mdx/MapEmbed.astro';
+import { offices, fullAddress, practice } from '../data/site';
+interface Props { city: string; intro?: string }
+const { city, intro } = Astro.props;
+const o = offices.cupertino;
+---
+<section class="wide office-card" aria-labelledby="office-card-heading">
+  <div>
+    <h2 id="office-card-heading">Our Cupertino Office</h2>
+    {intro && <p>{intro}</p>}
+    <p><strong>Phone:</strong><br /><a href={practice.phoneHref}>{practice.phone}</a></p>
+    <p><strong>Address:</strong><br />{fullAddress(o.id)}</p>
+    <p class="note">{`Our office is in Cupertino. Clients in ${city} can meet with us there or online.`}</p>
+    <a class="btn btn-secondary" href={`/${o.slug}/`}>Contact Us</a>
+  </div>
+  <MapEmbed office={o.id} />
+</section>
+
+<style>
+  .office-card { display: grid; gap: 1.5rem 2rem; align-items: start; margin: 3rem 0; padding: clamp(1.5rem, 4vw, 2.5rem); background: var(--forest-50); border-radius: var(--radius-lg); }
+  @media (min-width: 56rem) { .office-card { grid-template-columns: 1fr 1.2fr; } }
+  .office-card h2 { margin-top: 0; }
+  .note { color: var(--ink-soft); }
+</style>

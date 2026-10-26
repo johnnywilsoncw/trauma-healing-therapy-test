@@ -1,0 +1,170 @@
+---
+import { getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Ticker from '../components/Ticker.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import ClinicianCard from '../components/ClinicianCard.astro';
+import PostCard from '../components/PostCard.astro';
+import ReadyToBegin from '../components/ReadyToBegin.astro';
+import LocationSection from '../components/LocationSection.astro';
+import CtaPair from '../components/mdx/CtaPair.astro';
+import Lotus from '../assets/lotus.svg';
+import { mdxComponents } from '../components/mdx';
+import { practice } from '../data/site';
+import { getClinicians, getPosts } from '../lib/content';
+import banner from '../assets/wp/2025/05/CW-homepage-banner.jpg';
+import welcomeA from '../assets/wp/2025/04/Mariella-Banner-Image-2.jpg';
+import welcomeB from '../assets/wp/2025/02/CW-smiling-girl.jpg';
+import faqImg from '../assets/wp/2026/07/CW-coordinators.jpg';
+
+const faq = (await getEntry('pages', 'faq'))!;
+const { Content: Faqs } = await render(faq);
+const therapists = (await getClinicians()).filter((c) => c.data.group === 'therapist');
+const posts = (await getPosts()).slice(0, 3);
+
+// Highlights copied from the live homepage; icons are decorative.
+const highlights = [
+  { title: 'Same Day Consultations', text: 'Daytime, evenings and weekends available!', icon: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 16l2 2 4-4' },
+  { title: 'Private Pay', text: 'We provide a statement for out of network coverage.', icon: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5' },
+  { title: 'No Waitlist', text: 'When you’re ready, you shouldn’t have to wait.', icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2' },
+  { title: 'Trauma-Informed Care', text: 'We honor your story and move at your pace.', icon: 'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z' },
+];
+---
+<BaseLayout
+  title="Therapy | Cupertino & San Francisco, CA | Trauma Healing Therapy"
+  description="Trauma Healing Therapy offers trauma-informed counseling for individuals, couples, families, teens and kids, in person in Cupertino and online in San Francisco and across California."
+  image={banner}
+>
+  <PageHero size="lg" eyebrow="Trauma Healing Therapy" title="Therapy in Cupertino, CA <em>&amp; Online Across California</em>" subtitle="Real talk, real healing" image={banner}>
+    <p>
+      Trauma-informed therapy for Individuals, Couples, Families, Teens and Kids. In-person appointments in Cupertino &amp; online in
+      San Francisco and across California. You can reach us at <a href={practice.phoneHref}><strong>{practice.phone}</strong></a> to get started.
+    </p>
+  </PageHero>
+
+  <section class="highlights" aria-label="Why clients choose us">
+    <ul class="wrap hl-grid" data-stagger>
+      {highlights.map((h) => (
+        <li class="hl" data-reveal>
+          <span class="hl-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={h.icon} /></svg>
+          </span>
+          <h2 class="hl-title">{h.title}</h2>
+          <p>{h.text}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section welcome" aria-labelledby="welcome-heading">
+    <div class="wrap welcome-grid">
+      <div class="collage" data-reveal="left" aria-hidden="true">
+        <div class="c1"><Image src={welcomeA} alt="" width={640} widths={[320, 640]} sizes="(min-width: 60rem) 26rem, 70vw" /></div>
+        <div class="c2"><Image src={welcomeB} alt="" width={420} widths={[240, 420]} sizes="(min-width: 60rem) 16rem, 45vw" /></div>
+        <Lotus class="c-lotus" />
+        <p class="c-badge"><span>Individuals</span><span>Couples</span><span>Families</span><span>Teens &amp; Kids</span></p>
+      </div>
+      <div data-reveal="right">
+        <p class="eyebrow">Welcome</p>
+        <h2 id="welcome-heading">You’re not broken, <em>you’re stuck.</em></h2>
+        <p class="lede">Your history, your experiences, and your past shape who you are today. When those experiences leave you, your child, teen, or relationship feeling “less than” or unlovable, they can create patterns that get in the way of the life you want.</p>
+        <p>Trauma Healing Therapy can help break those patterns and support healing — <strong>for you, your child, teen, or relationship</strong>.</p>
+        <CtaPair />
+      </div>
+    </div>
+  </section>
+
+  <Ticker />
+
+  <section class="section section-sand" aria-labelledby="specialties-heading">
+    <div class="wrap">
+      <div class="section-head split-head" data-reveal>
+        <div>
+          <p class="eyebrow">How we help</p>
+          <h2 id="specialties-heading">Our <em>Specialties</em></h2>
+        </div>
+        <a class="btn btn-secondary" href={practice.bookingUrl}>Not sure? Get matched</a>
+      </div>
+      <ServiceGrid />
+    </div>
+  </section>
+
+  <section class="section team-band" aria-labelledby="team-heading">
+    <div class="wrap">
+      <div class="section-head split-head" data-reveal>
+        <div>
+          <p class="eyebrow">Our therapists</p>
+          <h2 id="team-heading">Meet the people who will <em>walk alongside you</em></h2>
+        </div>
+        <a class="btn btn-secondary" href="/our-team/">Meet the whole team</a>
+      </div>
+      <ul class="grid-cards team-grid">{therapists.map((c) => <ClinicianCard clinician={c} compact />)}</ul>
+    </div>
+  </section>
+
+  <section class="section section-tint faq-band" aria-labelledby="faq-heading">
+    <div class="wrap faq-grid">
+      <div class="faq-aside" data-reveal="left">
+        <p class="eyebrow">Questions</p>
+        <h2 id="faq-heading">Frequently Asked <em>Questions</em></h2>
+        <Image class="faq-img" src={faqImg} alt="Snow and Steph, Trauma Healing Therapy care coordinators" width={560} widths={[320, 560]} sizes="(min-width: 60rem) 26rem, 90vw" />
+        <CtaPair />
+      </div>
+      <div class="faq-list" data-reveal><Faqs components={mdxComponents} /></div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="section" aria-labelledby="blog-heading">
+      <div class="wrap">
+        <div class="section-head split-head" data-reveal>
+          <div>
+            <p class="eyebrow">From the blog</p>
+            <h2 id="blog-heading">Insights for your <em>healing</em></h2>
+          </div>
+          <a class="btn btn-secondary" href="/blog/">Read the blog</a>
+        </div>
+        <ul class="grid-cards">{posts.map((p) => <PostCard post={p} />)}</ul>
+      </div>
+    </section>
+  )}
+
+  <ReadyToBegin />
+  <LocationSection />
+</BaseLayout>
+
+<style>
+  .highlights { position: relative; z-index: 2; margin-top: calc(-1 * clamp(3rem, 7vw, 5rem)); }
+  .hl-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); list-style: none; padding: 0; margin-block: 0; }
+  .hl { margin: 0; padding: 1.6rem 1.5rem; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 1px solid rgb(15 42 33 / 0.06); transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+  .hl:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .hl-icon { display: grid; place-items: center; width: 3.2rem; height: 3.2rem; border-radius: 1rem; margin-bottom: 1rem; color: var(--rose); background: var(--rose-50); transition: transform 0.4s var(--ease), background-color 0.3s, color 0.3s; }
+  .hl:hover .hl-icon { transform: rotate(-8deg) scale(1.08); background: var(--rose); color: #fff; }
+  .hl-icon svg { width: 1.6rem; height: 1.6rem; }
+  .hl-title { font-size: 1.25rem; margin-bottom: 0.35rem; }
+  .hl p { margin: 0; color: var(--ink-soft); font-size: 0.98rem; }
+
+  .welcome-grid { display: grid; gap: clamp(3rem, 6vw, 6rem); align-items: center; }
+  @media (min-width: 60rem) { .welcome-grid { grid-template-columns: 1fr 1fr; } }
+  .collage { position: relative; min-height: clamp(24rem, 42vw, 34rem); }
+  .collage :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .c1 { position: absolute; left: 0; top: 0; width: 72%; height: 82%; border-radius: 220px 220px 28px 28px; overflow: hidden; box-shadow: var(--shadow-lg); }
+  .c2 { position: absolute; right: 0; bottom: 0; width: 44%; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 8px solid var(--paper); box-shadow: var(--shadow-lg); }
+  .c-lotus { position: absolute; right: 6%; top: 4%; width: 5.5rem; height: auto; color: var(--rose); opacity: 0.85; }
+  .c-badge { position: absolute; left: 6%; bottom: 4%; display: flex; flex-wrap: wrap; gap: 0.35rem; max-width: 15rem; margin: 0; padding: 0.9rem 1rem; border-radius: var(--radius); background: rgb(255 255 255 / 0.92); backdrop-filter: blur(8px); box-shadow: var(--shadow); }
+  .c-badge span { font-size: 0.82rem; font-weight: 650; color: var(--forest); background: var(--forest-50); padding: 0.2rem 0.6rem; border-radius: 999px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .c2 { animation: bob 6s ease-in-out infinite alternate; }
+    .c-lotus { animation: bob 5s ease-in-out infinite alternate-reverse; }
+  }
+  @keyframes bob { to { transform: translateY(-14px); } }
+
+  .split-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem 2rem; max-width: none; }
+  .split-head h2 { margin: 0; max-width: 34rem; }
+
+  .faq-grid { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 60rem) { .faq-grid { grid-template-columns: 0.8fr 1.2fr; } .faq-aside { position: sticky; top: 7rem; } }
+  .faq-aside :global(.faq-img) { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-top: 1rem; }
+</style>

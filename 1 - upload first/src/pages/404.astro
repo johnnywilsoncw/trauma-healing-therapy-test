@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import { practice } from '../data/site';
+---
+<BaseLayout title="Page Not Found | Trauma Healing Therapy" noindex>
+  <Hero title="We couldn’t find that page" ctas={false}>
+    <p>The page may have moved. You can return to the <a href="/">homepage</a>, <a href="/contact-us/">contact us</a>, or call <a href={practice.phoneHref}>{practice.phone}</a>.</p>
+  </Hero>
+  <section class="section">
+    <div class="wrap">
+      <h2>Our Specialties</h2>
+      <ServiceGrid />
+    </div>
+  </section>
+</BaseLayout>

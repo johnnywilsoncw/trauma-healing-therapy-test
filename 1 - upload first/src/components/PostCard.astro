@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import type { Post } from '../lib/content';
+interface Props { post: Post; headingLevel?: 'h2' | 'h3'; featured?: boolean }
+const { post, headingLevel = 'h3', featured = false } = Astro.props;
+const H = headingLevel;
+const service = await getEntry(post.data.category);
+const date = post.data.published.toLocaleDateString(post.data.lang === 'it' ? 'it-IT' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+<li class:list={['post', { featured }]} data-cat={post.data.category.id}>
+  <div class="post-img">
+    {post.data.heroImage && <Image src={post.data.heroImage} alt="" width={featured ? 960 : 520} widths={featured ? [520, 960] : [320, 520, 720]} sizes={featured ? '(min-width: 60rem) 40rem, 100vw' : '(min-width: 72rem) 22rem, (min-width: 40rem) 45vw, 100vw'} />}
+    {service && <span class="post-cat">{service.data.navLabel}</span>}
+  </div>
+  <div class="post-body">
+    <p class="post-meta"><time datetime={post.data.published.toISOString().slice(0, 10)}>{date}</time></p>
+    <H class="post-title"><a href={`/${post.id}/`}>{post.data.title}</a></H>
+    {post.data.description && <p class="post-desc">{post.data.description}</p>}
+    <span class="post-more" aria-hidden="true">{post.data.lang === 'it' ? 'Leggi' : 'Read article'}</span>
+  </div>
+</li>
+
+<style>
+  .post { position: relative; display: flex; flex-direction: column; margin: 0; background: #fff; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgb(15 42 33 / 0.07); transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease); }
+  .post:hover, .post:focus-within { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .post-img { position: relative; overflow: hidden; aspect-ratio: 16 / 10; background: var(--sage); }
+  .post-img :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+  .post:hover .post-img :global(img) { transform: scale(1.07); }
+  .post-cat { position: absolute; left: 1rem; top: 1rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; background: var(--rose); padding: 0.3rem 0.7rem; border-radius: 999px; }
+  .post-body { display: flex; flex-direction: column; flex: 1; padding: 1.3rem 1.5rem 1.5rem; }
+  .post-meta { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.4rem; }
+  .post-title { font-size: 1.3rem; margin: 0 0 0.6rem; }
+  .post-title a { color: var(--ink); text-decoration: none; }
+  .post-title a::after { content: ''; position: absolute; inset: 0; }
+  .post:has(.post-title a:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .post-title a:focus-visible { outline: none; }
+  .post-desc { font-size: 0.95rem; color: var(--ink-soft); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .post-more { margin-top: auto; font-weight: 650; color: var(--forest); }
+  .post-more::after { content: '→'; display: inline-block; margin-left: 0.35rem; transition: transform 0.3s var(--ease); }
+  .post:hover .post-more::after { transform: translateX(5px); }
+  .post:hover .post-title a { color: var(--rose); }
+  @media (min-width: 56rem) {
+    .featured { grid-column: 1 / -1; flex-direction: row; }
+    .featured .post-img { flex: 1.2; aspect-ratio: auto; min-height: 24rem; }
+    .featured .post-body { flex: 1; padding: clamp(1.5rem, 3vw, 3rem); justify-content: center; }
+    .featured .post-title { font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.4rem); }
+    .featured .post-more { margin-top: 1rem; }
+  }
+</style>

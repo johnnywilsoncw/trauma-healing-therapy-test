@@ -1,0 +1,10 @@
+---
+// The site's standard Contact + Free Consultation button pair.
+import { practice } from '../../data/site';
+interface Props { contactHref?: string; class?: string }
+const { contactHref = '/contact-us/', class: cls } = Astro.props;
+---
+<div class:list={['btn-row', cls]}>
+  <a class="btn btn-primary" href={practice.bookingUrl} data-cta="consultation">Free Consultation</a>
+  <a class="btn btn-secondary" href={contactHref} data-cta="contact">Contact Us</a>
+</div>

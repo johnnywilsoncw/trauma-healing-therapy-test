@@ -1,0 +1,48 @@
+---
+// Office details with the correct GBP map for each actual office.
+import MapEmbed from './mdx/MapEmbed.astro';
+import { offices, fullAddress, practice, type OfficeId } from '../data/site';
+interface Props { label?: string; sfLabel?: string; ids?: OfficeId[] }
+const { label, sfLabel = 'In San Francisco (Online Only)', ids = ['cupertino', 'san-francisco'] } = Astro.props;
+const title = (id: OfficeId) =>
+  label ? `${label} ${id === 'cupertino' ? 'In Cupertino' : sfLabel}` : id === 'cupertino' ? 'Cupertino Office Location' : 'San Francisco Office (Online Only)';
+---
+<section class="section section-tint locs" aria-label="Office locations">
+  <div class="wrap">
+    <div class="section-head center" data-reveal>
+      <p class="eyebrow">Visit or meet online</p>
+      <p class="locs-lede">In person in Cupertino. Online in San Francisco and across California.</p>
+    </div>
+    <div class="loc-grid" data-stagger>
+      {ids.map((id) => (
+        <article class="card loc" data-reveal>
+          <MapEmbed office={id} />
+          <div class="loc-body">
+            <span class:list={['badge', { online: !offices[id].inPerson }]}>{offices[id].availability}</span>
+            <h2 class="loc-title"><a href={`/${offices[id].slug}/`}>{title(id)}</a></h2>
+            <p class="loc-address">{fullAddress(id)}</p>
+            <p class="loc-meta">{offices[id].hours} · <a href={practice.phoneHref}>{practice.phone}</a></p>
+            <a class="btn btn-secondary" href={`/${offices[id].slug}/`}>Contact Us</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .locs-lede { font-family: var(--font-display); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.2rem); line-height: 1.25; margin: 0; }
+  .loc-grid { display: grid; gap: clamp(1rem, 3vw, 2rem); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .loc { overflow: hidden; }
+  .loc :global(.map) { margin: 0; }
+  .loc :global(.map iframe) { border-radius: 0; aspect-ratio: 16 / 9; max-height: 18rem; }
+  .loc :global(.map-link) { padding: 0.5rem 1.5rem 0; }
+  .loc-body { padding: 1rem 1.5rem 1.75rem; }
+  .badge { display: inline-block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.75rem; border-radius: 999px; background: var(--forest-50); color: var(--forest); }
+  .badge.online { background: var(--rose-50); color: var(--rose); }
+  .loc-title { font-size: clamp(1.4rem, 1.2rem + 0.7vw, 1.85rem); margin: 0.75rem 0 0.4rem; }
+  .loc-title a { color: var(--ink); text-decoration: none; }
+  .loc-title a:hover { color: var(--rose); }
+  .loc-address { margin-bottom: 0.25rem; font-weight: 600; }
+  .loc-meta { color: var(--ink-soft); font-size: 0.95rem; }
+</style>

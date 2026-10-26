@@ -1,0 +1,66 @@
+---
+// Light hero for pages without a banner photo: soft gradient, floating shapes, lotus mark,
+// and optional overlapping photos on the right.
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Lotus from '../assets/lotus.svg';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  photos?: { src: ImageMetadata; alt: string }[];
+}
+const { eyebrow, title, lede, photos = [] } = Astro.props;
+---
+<section class:list={['shero', { 'has-photos': photos.length }]}>
+  <span class="blob b1" aria-hidden="true"></span>
+  <span class="blob b2" aria-hidden="true"></span>
+  <Lotus class="shero-lotus" aria-hidden="true" />
+  <div class="wrap shero-grid">
+    <div class="shero-copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 set:html={title} />
+      {lede && <p class="lede">{lede}</p>}
+      <slot />
+    </div>
+    {photos.length > 0 && (
+      <div class="shero-photos" aria-hidden={photos.every((p) => !p.alt) ? 'true' : undefined}>
+        {photos.slice(0, 3).map((p, i) => (
+          <div class:list={['ph', `ph${i + 1}`]}>
+            <Image src={p.src} alt={p.alt} width={520} widths={[260, 520]} sizes="(min-width: 60rem) 22rem, 50vw" loading="eager" />
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .shero { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(160deg, var(--forest-50) 0%, var(--paper) 55%, var(--rose-50) 100%); padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .blob { position: absolute; z-index: -1; border-radius: 50%; filter: blur(40px); opacity: 0.55; }
+  .b1 { width: 26rem; height: 26rem; background: var(--sage); top: -8rem; right: 8%; }
+  .b2 { width: 18rem; height: 18rem; background: #f6d3dc; bottom: -6rem; left: 30%; }
+  @media (prefers-reduced-motion: no-preference) {
+    .b1 { animation: drift 14s ease-in-out infinite alternate; }
+    .b2 { animation: drift 18s ease-in-out infinite alternate-reverse; }
+  }
+  @keyframes drift { to { transform: translate(-3rem, 2rem) scale(1.1); } }
+  .shero-lotus { position: absolute; z-index: -1; right: -3rem; top: 50%; width: clamp(16rem, 30vw, 28rem); height: auto; color: var(--forest); opacity: 0.05; transform: translateY(-50%) rotate(-8deg); }
+  .shero-grid { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 60rem) { .has-photos .shero-grid { grid-template-columns: 1.1fr 0.9fr; } }
+  .shero-copy { max-width: 44rem; }
+  .shero h1 { margin-bottom: 0.35em; }
+  .shero-photos { position: relative; min-height: 24rem; }
+  .ph { position: absolute; overflow: hidden; border: 6px solid #fff; box-shadow: var(--shadow-lg); }
+  .ph :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .ph1 { width: 58%; aspect-ratio: 4 / 5; right: 0; top: 0; border-radius: 160px 160px 24px 24px; }
+  .ph2 { width: 46%; aspect-ratio: 1; left: 0; bottom: 0; border-radius: 50%; }
+  .ph3 { width: 34%; aspect-ratio: 1; left: 22%; top: 0; border-radius: 24px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ph { animation: float 7s ease-in-out infinite alternate; }
+    .ph2 { animation-delay: -2s; } .ph3 { animation-delay: -4s; }
+  }
+  @keyframes float { to { transform: translateY(-12px); } }
+  @media (max-width: 59.99rem) { .shero-photos { min-height: 18rem; max-width: 30rem; } }
+</style>

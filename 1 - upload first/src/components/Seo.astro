@@ -1,0 +1,34 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { SITE_URL, IS_PRODUCTION, practice } from '../data/site';
+import defaultShare from '../assets/wp/2025/04/Mariella-Banner-Image-2.jpg';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  lang?: string;
+}
+const { title, description, image, noindex = false, type = 'website', lang = 'en' } = Astro.props;
+// Canonicals always use the production origin, never a preview hostname.
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const share = await getImage({ src: image ?? defaultShare, width: 1200, format: 'jpg' });
+const shareUrl = new URL(share.src, SITE_URL).href;
+// Preview/development builds are never indexable; production pages can opt out individually.
+const robots = !IS_PRODUCTION ? 'noindex, nofollow' : noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large';
+---
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={practice.name} />
+<meta property="og:locale" content={lang === 'it' ? 'it_IT' : 'en_US'} />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={shareUrl} />
+<meta name="twitter:card" content="summary_large_image" />

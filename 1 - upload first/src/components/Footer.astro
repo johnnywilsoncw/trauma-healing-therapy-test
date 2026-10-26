@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import { practice, offices, fullAddress, legalLinks } from '../data/site';
+import ptBadge from '../assets/wp/2024/05/Psychology-Today-Verified-1-1.png';
+import emdriaBadge from '../assets/wp/2024/05/EMDRIALogo.png';
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <p class="footer-name">{practice.name}</p>
+      <p>{practice.serviceArea}</p>
+      <p><a class="footer-phone" href={practice.phoneHref}>{practice.phone}</a></p>
+    </div>
+    <div>
+      <p class="footer-head">Locations</p>
+      {Object.values(offices).map((o) => (
+        <p>
+          <a href={`/${o.slug}/`}>{fullAddress(o.id)}</a>
+          <br /><span class="muted">{`(${o.availability})`}</span>
+        </p>
+      ))}
+    </div>
+    <div>
+      <p class="footer-head">Find us</p>
+      <div class="badges">
+        <a href={practice.psychologyTodayUrl} rel="noopener">
+          <Image src={ptBadge} alt="Verified by Psychology Today" width={160} />
+        </a>
+        <Image src={emdriaBadge} alt="EMDRIA member logo" width={110} />
+      </div>
+      <p class="social">
+        <a href="https://www.facebook.com/DrMariella" rel="noopener">Facebook</a>
+        <a href="https://www.linkedin.com/in/dr-mariella-lauriola-ph-d-47774a54/" rel="noopener">LinkedIn</a>
+      </p>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <p>&copy; {year} {practice.legalName}</p>
+    <ul class="legal">
+      {legalLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--ink); color: #e9efeb; font-size: 0.95rem; padding-top: 3rem; }
+  .site-footer a { color: #fff; }
+  .site-footer a:hover { color: #f6c9d5; }
+  .footer-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); padding-bottom: 2rem; }
+  .footer-name { font-family: var(--font-display); font-size: 1.35rem; color: #fff; margin-bottom: 0.5rem; }
+  .footer-head { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.8rem; color: #b9c9c0; margin-bottom: 0.75rem; }
+  .footer-phone { font-weight: 700; font-size: 1.1rem; }
+  .muted { color: #b9c9c0; }
+  .badges { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+  .badges :global(img) { background: #fff; border-radius: 8px; padding: 0.4rem; height: auto; }
+  .social { display: flex; gap: 1rem; }
+  .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem; border-top: 1px solid rgb(255 255 255 / 0.15); padding-block: 1.25rem; font-size: 0.85rem; }
+  .footer-bottom p { margin: 0; }
+  .legal { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; list-style: none; margin: 0; padding: 0; }
+  .legal li { margin: 0; }
+</style>

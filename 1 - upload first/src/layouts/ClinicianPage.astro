@@ -1,0 +1,134 @@
+---
+import { render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import ReadyToBegin from '../components/ReadyToBegin.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import Lotus from '../assets/lotus.svg';
+import { mdxComponents } from '../components/mdx';
+import { practice, SITE_URL } from '../data/site';
+import { clinicianName, type Clinician } from '../lib/content';
+import { personSchema } from '../lib/schema';
+
+interface Props { entry: Clinician }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const serviceIds = d.services.map((s) => s.id);
+const photo = d.bioPhoto ?? d.photo;
+const shareImg = await getImage({ src: photo, width: 600 });
+const name = clinicianName(entry);
+const first = d.honorific ? `${d.honorific} ${d.name.split(' ')[0]}` : d.name.split(' ')[0];
+const tags = (d.modalitiesSummary ?? '').split(';').map((t) => t.trim()).filter(Boolean);
+const accepting = /accepting new clients/i.test(d.status ?? '') && !/not accepting/i.test(d.status ?? '');
+const isTherapist = d.group === 'therapist';
+---
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  image={photo}
+  schema={[personSchema({ slug: d.path, name, jobTitle: d.role, image: new URL(shareImg.src, SITE_URL).href, description: d.description })]}
+>
+  <section class="bio-hero">
+    <span class="blob" aria-hidden="true"></span>
+    <Lotus class="bio-lotus" aria-hidden="true" />
+    <div class="wrap bio-grid">
+      <div class="bio-photo" data-reveal="left">
+        <Image src={photo} alt={name} width={560} height={680} widths={[320, 560, 840]} sizes="(min-width: 56rem) 28rem, 90vw" loading="eager" fetchpriority="high" />
+        {d.status && <span class:list={['status', { open: accepting }]}>{d.status}</span>}
+      </div>
+      <div class="bio-intro">
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/our-team/">Our Team</a></li><li><span aria-current="page">{name}</span></li></ol></nav>
+        <p class="eyebrow">{d.role}{d.pronouns && ` · ${d.pronouns}`}</p>
+        <h1>{d.h1}</h1>
+        {d.tagline && <p class="lede">{d.tagline}</p>}
+        {d.availability && <p class="avail">{d.availability}</p>}
+        {tags.length > 0 && <ul class="tags" aria-label="Modalities">{tags.map((t) => <li>{t}</li>)}</ul>}
+        <div class="btn-row">
+          <a class="btn btn-primary" href={practice.bookingUrl}>{isTherapist ? `Get Matched with ${first}` : 'Free Consultation'}</a>
+          <a class="btn btn-secondary" href="/contact-us/">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bio-body-wrap">
+    <div class="wrap bio-layout">
+      <article class="prose bio-body" data-reveal>
+        <Content components={mdxComponents} />
+      </article>
+      <aside class="glance" aria-label={`${first} at a glance`} data-reveal="right">
+        <div class="card glance-card">
+          <p class="g-title">At a glance</p>
+          <dl>
+            <dt>Role</dt><dd>{d.role}{d.roleSecondary && <><br />{d.roleSecondary}</>}</dd>
+            {d.availability && <><dt>Sessions</dt><dd>{d.availability}</dd></>}
+            {d.status && <><dt>Availability</dt><dd>{d.status}</dd></>}
+            {d.populationsSummary && <><dt>Works with</dt><dd>{d.populationsSummary}</dd></>}
+          </dl>
+          <a class="btn btn-primary g-btn" href={practice.bookingUrl}>{isTherapist ? 'Get Matched' : 'Free Consultation'}</a>
+          <a class="g-phone" href={practice.phoneHref}>or call {practice.phone}</a>
+        </div>
+        {d.psychologyToday && <a class="g-pt" href={d.psychologyToday} rel="noopener">Verified profile on Psychology Today</a>}
+      </aside>
+    </div>
+  </section>
+
+  {serviceIds.length > 0 && (
+    <section class="section section-sand" aria-labelledby="bio-services">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">How {first} can help</p>
+          <h2 id="bio-services">Services {first} <em>Offers</em></h2>
+        </div>
+        <ServiceGrid ids={serviceIds} />
+      </div>
+    </section>
+  )}
+
+  <ReadyToBegin intro={d.readyIntro} />
+</BaseLayout>
+
+<style>
+  .bio-hero { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(160deg, var(--forest-50), var(--paper) 60%, var(--rose-50)); padding-block: clamp(3rem, 7vw, 6rem); }
+  .blob { position: absolute; z-index: -1; width: 34rem; height: 34rem; border-radius: 50%; background: var(--sage); filter: blur(60px); opacity: 0.6; left: -10rem; top: -10rem; }
+  .bio-lotus { position: absolute; z-index: -1; right: -4rem; bottom: -3rem; width: clamp(16rem, 28vw, 26rem); height: auto; color: var(--rose); opacity: 0.06; }
+  .bio-grid { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  @media (min-width: 56rem) { .bio-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } }
+  .bio-photo { position: relative; max-width: 28rem; }
+  .bio-photo::before { content: ''; position: absolute; inset: 1.5rem -1.25rem -1.25rem 1.5rem; z-index: -1; border-radius: 240px 240px var(--radius-lg) var(--radius-lg); background: linear-gradient(140deg, var(--rose-50), var(--sage)); }
+  .bio-photo :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 5 / 6; object-fit: cover; object-position: top; border-radius: 240px 240px var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-lg); }
+  .status { position: absolute; left: 1.25rem; bottom: 1.25rem; display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; background: rgb(255 255 255 / 0.94); box-shadow: var(--shadow-sm); }
+  .status::before { content: ''; width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--gold); }
+  .status.open::before { background: #2f9e6c; }
+  .crumbs ol { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0 0 1.25rem; font-size: 0.88rem; color: var(--ink-soft); }
+  .crumbs li { margin: 0; }
+  .crumbs li + li::before { content: '/'; margin-right: 0.4rem; opacity: 0.5; }
+  .crumbs a { color: var(--ink-soft); text-decoration: none; }
+  .crumbs a:hover { color: var(--rose); }
+  .bio-intro h1 { font-size: clamp(2.3rem, 1.6rem + 3vw, 4rem); }
+  .avail { font-weight: 650; color: var(--forest); }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; padding: 0; margin: 1rem 0 0; }
+  .tags li { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--forest); background: #fff; border: 1px solid var(--line); padding: 0.3rem 0.8rem; border-radius: 999px; }
+
+  .bio-layout { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  @media (min-width: 60rem) { .bio-layout { grid-template-columns: minmax(0, 1fr) 21rem; } .glance { position: sticky; top: 7rem; } }
+  .bio-body { max-width: 44rem; }
+  .bio-body :global(h2) { font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.6rem); margin-top: 2.5rem; }
+  .bio-body :global(h2:first-child) { margin-top: 0; }
+  .bio-body :global(h2)::after { content: ''; display: block; width: 3rem; height: 3px; border-radius: 3px; background: var(--rose); margin-top: 0.8rem; }
+  .bio-body :global(p:first-of-type) { font-family: var(--font-display); font-size: 1.35rem; line-height: 1.5; color: var(--ink); }
+  .bio-body :global(ul) { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
+  @media (min-width: 40rem) { .bio-body :global(ul) { grid-template-columns: 1fr 1fr; } }
+  .bio-body :global(ul > li) { margin: 0; padding: 0.6rem 0.9rem 0.6rem 2.4rem; position: relative; background: var(--forest-50); border-radius: 12px; font-size: 0.95rem; }
+  .bio-body :global(ul > li)::before { content: ''; position: absolute; left: 0.85rem; top: 0.95rem; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--rose); box-shadow: 0 0 0 4px var(--rose-50); }
+  .bio-body :global(.btn-row) { margin-block: 1rem 2rem; }
+  .glance-card { padding: 1.75rem; background: linear-gradient(170deg, #fff, var(--forest-50)); }
+  .g-title { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; }
+  .glance dl { margin: 0 0 1.25rem; }
+  .glance dt { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rose); }
+  .glance dd { margin: 0.15rem 0 1rem; font-size: 0.97rem; }
+  .g-btn { width: 100%; }
+  .g-phone { display: block; text-align: center; margin-top: 0.75rem; font-weight: 600; }
+  .g-pt { display: block; margin-top: 1rem; font-size: 0.92rem; text-align: center; }
+</style>

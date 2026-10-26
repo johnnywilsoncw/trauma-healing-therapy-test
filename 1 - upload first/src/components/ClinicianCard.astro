@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import { practice } from '../data/site';
+import { clinicianName, type Clinician } from '../lib/content';
+interface Props { clinician: Clinician; headingLevel?: 'h2' | 'h3'; showMatch?: boolean; compact?: boolean }
+const { clinician: c, headingLevel = 'h3', showMatch = true, compact = false } = Astro.props;
+const H = headingLevel;
+const name = clinicianName(c);
+const tags = (c.data.modalitiesSummary ?? '').split(';').map((t) => t.trim()).filter(Boolean);
+const accepting = /accepting new clients/i.test(c.data.status ?? '') && !/not accepting/i.test(c.data.status ?? '');
+---
+<li class:list={['clin', { compact }]}>
+  <div class="clin-photo">
+    <Image src={c.data.photo} alt={name} width={480} height={560} widths={[280, 480, 720]} sizes="(min-width: 60rem) 24rem, (min-width: 40rem) 45vw, 100vw" />
+    {c.data.status && <span class:list={['status', { open: accepting }]}>{c.data.status}</span>}
+  </div>
+  <div class="clin-body">
+    <H class="clin-name"><a href={`/${c.data.path}/`}>{name}</a></H>
+    <p class="clin-role">{c.data.role}{c.data.roleSecondary && <> · {c.data.roleSecondary}</>}</p>
+    {c.data.availability && <p class="clin-avail">{c.data.availability}</p>}
+    {!compact && tags.length > 0 && <ul class="tags" aria-label="Modalities">{tags.map((t) => <li>{t}</li>)}</ul>}
+    {!compact && c.data.populationsSummary && <p class="clin-meta"><strong>Populations:</strong> {c.data.populationsSummary}</p>}
+    {!compact && c.data.summary && c.data.summary.split('\n\n').map((p) => <p class="clin-meta">{p}</p>)}
+    <div class="clin-actions">
+      <a class="btn btn-secondary" href={`/${c.data.path}/`} aria-label={`Read full bio: ${name}`}>Read Full Bio</a>
+      {showMatch && c.data.group === 'therapist' && <a class="btn btn-primary" href={practice.bookingUrl}>Get Matched</a>}
+    </div>
+  </div>
+</li>
+
+<style>
+  .clin { position: relative; display: flex; flex-direction: column; margin: 0; background: #fff; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgb(15 42 33 / 0.07); transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease); }
+  .clin:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .clin-photo { position: relative; overflow: hidden; aspect-ratio: 6 / 7; background: var(--sage); }
+  .clin-photo :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1s var(--ease); }
+  .clin:hover .clin-photo :global(img) { transform: scale(1.05); }
+  .clin-photo::after { content: ''; position: absolute; inset: auto 0 0; height: 35%; background: linear-gradient(transparent, rgb(15 42 33 / 0.45)); }
+  .status { position: absolute; z-index: 1; left: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.35rem 0.8rem; border-radius: 999px; font-size: 0.8rem; font-weight: 700; color: var(--ink); background: rgb(255 255 255 / 0.92); backdrop-filter: blur(6px); }
+  .status::before { content: ''; width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--gold); }
+  .status.open::before { background: #2f9e6c; box-shadow: 0 0 0 0 rgb(47 158 108 / 0.6); }
+  @media (prefers-reduced-motion: no-preference) { .status.open::before { animation: pulse 2.2s infinite; } }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgb(47 158 108 / 0); } 100% { box-shadow: 0 0 0 0 rgb(47 158 108 / 0); } }
+  .clin-body { display: flex; flex-direction: column; flex: 1; padding: 1.4rem 1.5rem 1.6rem; }
+  .clin-name { font-size: 1.45rem; margin: 0 0 0.2rem; }
+  .clin-name a { color: var(--ink); text-decoration: none; }
+  .clin-name a:hover { color: var(--rose); }
+  .clin-role { font-family: var(--font-display); font-style: italic; color: var(--rose); margin-bottom: 0.5rem; }
+  .clin-avail { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.8rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0 0 0.9rem; }
+  .tags li { margin: 0; font-size: 0.8rem; font-weight: 600; color: var(--forest); background: var(--forest-50); padding: 0.25rem 0.65rem; border-radius: 999px; }
+  .clin-meta { font-size: 0.93rem; color: var(--ink-soft); margin-bottom: 0.6rem; }
+  .clin-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: auto; padding-top: 0.8rem; }
+  .clin-actions .btn { min-height: 2.7rem; padding: 0.55rem 1.1rem; font-size: 0.93rem; }
+</style>

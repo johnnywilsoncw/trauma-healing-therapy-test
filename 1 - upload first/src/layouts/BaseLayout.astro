@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import Seo from '../components/Seo.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { GTM_ID, IS_PRODUCTION, SITE_URL } from '../data/site';
+import { practiceSchema } from '../lib/schema';
+import icon from '../assets/wp/2023/03/cropped-image-2-1.png';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: ImageMetadata;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  lang?: 'en' | 'it';
+  schema?: Record<string, unknown>[];
+}
+const { title, description, image, noindex, type, lang = 'en', schema = [] } = Astro.props;
+const [icon32, icon180, icon512] = await Promise.all([
+  getImage({ src: icon, width: 32, height: 32, format: 'png' }),
+  getImage({ src: icon, width: 180, height: 180, format: 'png' }),
+  getImage({ src: icon, width: 512, height: 512, format: 'png' }),
+]);
+const loadGtm = IS_PRODUCTION && GTM_ID;
+---
+<!doctype html>
+<html lang={lang === 'it' ? 'it' : 'en-US'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo title={title} description={description} image={image} noindex={noindex} type={type} lang={lang} />
+    <link rel="icon" type="image/png" sizes="32x32" href={icon32.src} />
+    <link rel="apple-touch-icon" href={icon180.src} />
+    <meta name="theme-color" content="#1f5140" />
+    {loadGtm && (
+      <script is:inline define:vars={{ id: GTM_ID }}>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', id);
+      </script>
+    )}
+    <JsonLd data={[...practiceSchema(new URL(icon512.src, SITE_URL).href), ...schema]} />
+  </head>
+  <body>
+    {loadGtm && (
+      <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+    )}
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Scroll reveal. Content is fully visible without this script; it only runs when the
+      // visitor has not asked for reduced motion.
+      if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+        document.querySelectorAll<HTMLElement>('.grid-cards, [data-stagger]').forEach((list) =>
+          [...list.children].forEach((el, i) => {
+            (el as HTMLElement).dataset.reveal ??= '';
+            (el as HTMLElement).style.setProperty('--d', `${Math.min(i, 6) * 0.08}s`);
+          }),
+        );
+        const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        const io = new IntersectionObserver(
+          (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        // Anything already on screen is shown immediately; the rest animates in on scroll.
+        els.forEach((el) => { if (el.getBoundingClientRect().top < innerHeight * 0.92) el.classList.add('is-in'); else io.observe(el); });
+        document.documentElement.classList.add('js-reveal');
+      }
+    </script>
+  </body>
+</html>

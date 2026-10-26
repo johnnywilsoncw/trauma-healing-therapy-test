@@ -1,0 +1,14 @@
+---
+// Mentaya out-of-network benefits widget (embed URL copied from the live Rates & Fees page).
+import { practice } from '../../data/site';
+---
+<div class="mentaya">
+  <iframe src={practice.mentayaWidgetUrl} title="Mentaya out-of-network benefits check" loading="lazy"></iframe>
+  <p class="mentaya-link">If the benefits check does not load, <a href={practice.mentayaUrl} rel="noopener">open it on Mentaya</a>.</p>
+</div>
+
+<style>
+  .mentaya { margin: 1.5rem 0 2rem; }
+  .mentaya iframe { display: block; width: 100%; min-height: 34rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: #fff; }
+  .mentaya-link { font-size: 0.9rem; margin-top: 0.5rem; }
+</style>

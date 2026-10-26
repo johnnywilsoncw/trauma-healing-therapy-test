@@ -1,0 +1,64 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import ClinicianCard from '../components/ClinicianCard.astro';
+import ReadyToBegin from '../components/ReadyToBegin.astro';
+import LocationSection from '../components/LocationSection.astro';
+import { mdxComponents } from '../components/mdx';
+import { SITE_URL } from '../data/site';
+import { cliniciansForService, type Service } from '../lib/content';
+import { serviceSchema } from '../lib/schema';
+import fallback from '../assets/wp/2025/04/Mariella-Banner-Image-2.jpg';
+
+interface Props { entry: Service }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const clinicians = await cliniciansForService(entry.id);
+const url = `${SITE_URL}/${entry.id}/`;
+const it = d.lang === 'it';
+const isApproach = d.kind === 'approach';
+const group = d.kind === 'modality' ? 'Approaches' : isApproach ? 'Other Approaches' : 'Specialties';
+// Hero facts restate the confirmed service model (Cupertino in person, San Francisco online only).
+const chips = isApproach ? [] : it
+  ? ['Di persona a Cupertino', 'Online in tutta la California', 'Consulenza gratuita']
+  : ['In person in Cupertino', 'Online in San Francisco & across California', 'Free consultation'];
+---
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  image={d.banner ?? d.card?.image}
+  lang={d.lang}
+  schema={[serviceSchema({ url, name: d.navLabel, description: d.description })]}
+>
+  <PageHero
+    eyebrow={d.eyebrow ?? group}
+    title={d.h1}
+    subtitle={d.subtitle}
+    image={d.banner ?? d.card?.image ?? fallback}
+    chips={chips}
+    crumbs={[{ label: it ? 'Home' : 'Home', href: '/' }, { label: group }, { label: d.navLabel }]}
+  />
+
+  <div class="service-content">
+    <Content components={mdxComponents} />
+  </div>
+
+  {clinicians.length > 0 && (
+    <section class="section" aria-labelledby="clinicians-heading">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">{it ? 'Il team' : 'Your therapist'}</p>
+          <h2 id="clinicians-heading">{it ? 'I nostri terapeuti' : <>Clinicians Who Offer <em>{d.navLabel}</em></>}</h2>
+        </div>
+        <ul class="grid-cards">{clinicians.map((c) => <ClinicianCard clinician={c} compact />)}</ul>
+      </div>
+    </section>
+  )}
+
+  <RelatedPosts serviceId={entry.id} heading={it ? 'Dal Nostro Blog' : 'From Our Blog'} />
+  <ReadyToBegin />
+  {!isApproach && <LocationSection label={d.locationLabel} sfLabel={d.sfLabel} />}
+</BaseLayout>

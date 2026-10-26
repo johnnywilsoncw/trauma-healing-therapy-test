@@ -1,0 +1,126 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SoftHero from '../components/SoftHero.astro';
+import ClinicianCard from '../components/ClinicianCard.astro';
+import ReadyToBegin from '../components/ReadyToBegin.astro';
+import Lotus from '../assets/lotus.svg';
+import { practice } from '../data/site';
+import { getClinicians, getServices, clinicianName } from '../lib/content';
+
+const team = await getClinicians();
+const therapists = team.filter((c) => c.data.group === 'therapist');
+const support = team.filter((c) => c.data.group === 'support');
+const founder = team.find((c) => c.data.group === 'founder');
+// Older approach pages kept from the live site, linked here rather than in the main menu.
+const approaches = await getServices(['approach']);
+---
+<BaseLayout
+  title="Our Team | Cupertino & San Francisco | Trauma Healing Therapy"
+  description="Meet the Trauma Healing Therapy team serving Cupertino and San Francisco, CA, and clients online across California."
+>
+  <SoftHero
+    eyebrow="About us"
+    title="Meet Our <em>Team</em>"
+    photos={therapists.slice(0, 3).map((c) => ({ src: c.data.photo, alt: '' }))}
+  >
+    <div class="btn-row">
+      <a class="btn btn-primary" href={practice.bookingUrl}>Get Matched</a>
+      <a class="btn btn-secondary" href="/contact-us/">Contact Us</a>
+    </div>
+  </SoftHero>
+
+  <section class="section" aria-labelledby="team-therapists">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Clinical team</p>
+        <h2 id="team-therapists">Our <em>Therapists</em></h2>
+      </div>
+      <ul class="grid-cards team-grid">{therapists.map((c) => <ClinicianCard clinician={c} />)}</ul>
+    </div>
+  </section>
+
+  <section class="section section-tint" aria-labelledby="team-support">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">Client care</p>
+        <h2 id="team-support">Our <em>Support Team</em></h2>
+      </div>
+      <ul class="support" data-stagger>
+        {support.map((c) => (
+          <li class="card support-card" data-reveal>
+            <div class="sc-photo"><Image src={c.data.photo} alt={clinicianName(c)} width={320} height={320} widths={[200, 320]} sizes="10rem" /></div>
+            <div>
+              <h3 class="sc-name"><a href={`/${c.data.path}/`}>{clinicianName(c)}</a></h3>
+              <p class="sc-role">{c.data.role}</p>
+              {c.data.summary?.split('\n\n').map((p) => <p class="sc-text">{p}</p>)}
+              <a class="btn btn-secondary" href={`/${c.data.path}/`} aria-label={`Read full bio: ${clinicianName(c)}`}>Read Full Bio</a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {founder && (
+    <section class="section section-dark founder" aria-labelledby="team-founder">
+      <Lotus class="lotus-mark founder-lotus" aria-hidden="true" />
+      <div class="wrap founder-grid">
+        <div class="founder-photo" data-reveal="left">
+          <Image src={founder.data.photo} alt={clinicianName(founder)} width={560} height={680} widths={[320, 560]} sizes="(min-width: 60rem) 26rem, 80vw" />
+        </div>
+        <div data-reveal="right">
+          <p class="eyebrow">Our founder</p>
+          <h2 id="team-founder">{clinicianName(founder)}</h2>
+          <p class="f-role">{founder.data.role} · {founder.data.roleSecondary}</p>
+          {founder.data.status && <p class="f-status">{founder.data.status}</p>}
+          <div class="btn-row">
+            <a class="btn btn-primary" href={`/${founder.data.path}/`} aria-label={`Read full bio: ${clinicianName(founder)}`}>Read Full Bio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {approaches.length > 0 && (
+    <section class="section section-sand approaches" aria-labelledby="approaches-heading">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">More from our toolkit</p>
+          <h2 id="approaches-heading">Other <em>Approaches</em></h2>
+        </div>
+        <ul class="ap-list" data-stagger>
+          {approaches.map((a) => <li data-reveal><a href={`/${a.id}/`}>{a.data.navLabel}</a></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+  <ReadyToBegin />
+</BaseLayout>
+
+<style>
+  .team-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+  .support { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); }
+  .support-card { margin: 0; display: grid; grid-template-columns: 9rem 1fr; gap: 1.5rem; padding: 1.75rem; align-items: start; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+  .support-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  @media (max-width: 30rem) { .support-card { grid-template-columns: 1fr; } }
+  .sc-photo { width: 9rem; aspect-ratio: 1; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 6px var(--forest-50), var(--shadow); }
+  .sc-photo :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .sc-name { font-size: 1.5rem; margin: 0.25rem 0 0.15rem; }
+  .sc-name a { color: var(--ink); text-decoration: none; }
+  .sc-name a:hover { color: var(--rose); }
+  .sc-role { font-family: var(--font-display); font-style: italic; color: var(--rose); margin-bottom: 0.6rem; }
+  .sc-text { font-size: 0.97rem; color: var(--ink-soft); }
+  .founder-lotus { left: -4rem; bottom: -4rem; color: #fff; }
+  .founder-grid { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  @media (min-width: 60rem) { .founder-grid { grid-template-columns: 0.8fr 1.2fr; } }
+  .founder-photo { max-width: 26rem; }
+  .founder-photo :global(img) { display: block; width: 100%; height: auto; border-radius: 220px 220px var(--radius-lg) var(--radius-lg); box-shadow: var(--shadow-lg); object-fit: cover; aspect-ratio: 5 / 6; object-position: top; }
+  .founder h2 { font-size: clamp(2.2rem, 1.6rem + 2.4vw, 3.6rem); }
+  .f-role { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; color: var(--gold); }
+  .f-status { display: inline-block; padding: 0.35rem 0.9rem; border-radius: 999px; border: 1px solid rgb(255 255 255 / 0.3); font-size: 0.9rem; }
+  .ap-list { display: flex; flex-wrap: wrap; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
+  .ap-list li { margin: 0; }
+  .ap-list a { display: inline-block; padding: 0.7rem 1.3rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink); font-weight: 600; text-decoration: none; transition: background-color 0.25s, color 0.25s, transform 0.3s var(--ease); }
+  .ap-list a:hover { background: var(--forest); color: #fff; transform: translateY(-2px); }
+</style>

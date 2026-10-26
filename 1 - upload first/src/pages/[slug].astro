@@ -1,0 +1,37 @@
+---
+// Every root-level content URL (the live site's flat URL structure is preserved).
+import { getCollection } from 'astro:content';
+import ServicePage from '../layouts/ServicePage.astro';
+import ClinicianPage from '../layouts/ClinicianPage.astro';
+import GeoPage from '../layouts/GeoPage.astro';
+import LocationPage from '../layouts/LocationPage.astro';
+import SimplePage from '../layouts/SimplePage.astro';
+import PostPage from '../layouts/PostPage.astro';
+import CategoryPage from '../layouts/CategoryPage.astro';
+import { assertUniqueRoutes, getServices, getClinicians, getPosts } from '../lib/content';
+import { categoryPages } from '../data/categoryPages';
+
+export async function getStaticPaths() {
+  // Fails the build on duplicate URLs or broken references.
+  await assertUniqueRoutes(['our-team', 'contact-us', 'blog', 'thank-you', ...categoryPages.map((c) => c.slug)]);
+  const live = <T extends { data: { draft?: boolean } }>(xs: T[]) => xs.filter((x) => !x.data.draft);
+  return [
+    ...(await getServices(['specialty', 'modality', 'approach'])).map((entry) => ({ params: { slug: entry.id }, props: { kind: 'service', entry } })),
+    ...(await getClinicians()).map((entry) => ({ params: { slug: entry.data.path }, props: { kind: 'clinician', entry } })),
+    ...live(await getCollection('geo')).map((entry) => ({ params: { slug: entry.id }, props: { kind: 'geo', entry } })),
+    ...(await getCollection('locations')).map((entry) => ({ params: { slug: entry.data.path }, props: { kind: 'location', entry } })),
+    ...live(await getCollection('pages')).map((entry) => ({ params: { slug: entry.id }, props: { kind: 'page', entry } })),
+    ...(await getPosts()).map((entry) => ({ params: { slug: entry.id }, props: { kind: 'post', entry } })),
+    ...categoryPages.map((entry) => ({ params: { slug: entry.slug }, props: { kind: 'category', entry } })),
+  ];
+}
+
+const { kind, entry } = Astro.props as { kind: string; entry: any };
+---
+{kind === 'service' && <ServicePage entry={entry} />}
+{kind === 'clinician' && <ClinicianPage entry={entry} />}
+{kind === 'geo' && <GeoPage entry={entry} />}
+{kind === 'location' && <LocationPage entry={entry} />}
+{kind === 'page' && <SimplePage entry={entry} />}
+{kind === 'post' && <PostPage entry={entry} />}
+{kind === 'category' && <CategoryPage entry={entry} />}

@@ -1,0 +1,47 @@
+---
+// Photo cards for each specialty/modality: heading link, image and a separate button link.
+// The heading link stretches over the card, and the button stays independently clickable.
+import { Image } from 'astro:assets';
+import { getServices } from '../lib/content';
+
+interface Props { suffix?: string; headingLevel?: 'h2' | 'h3'; ids?: string[]; kinds?: ('specialty' | 'modality')[] }
+const { suffix = '', headingLevel = 'h3', ids, kinds = ['specialty', 'modality'] } = Astro.props;
+const H = headingLevel;
+let services = await getServices(kinds);
+if (ids) services = services.filter((s) => ids.includes(s.id));
+---
+<ul class="grid-cards tiles">
+  {services.filter((s) => s.data.card).map((s) => (
+    <li class="tile">
+      <Image src={s.data.card!.image} alt={s.data.card!.alt} width={480} height={600} widths={[320, 480, 720]} sizes="(min-width: 72rem) 18rem, (min-width: 40rem) 45vw, 100vw" />
+      <div class="tile-body">
+        {s.data.kind === 'modality' && <span class="tile-tag">Approach</span>}
+        <H class="tile-title"><a href={`/${s.id}/`}>{`${s.data.navLabel}${suffix}`}</a></H>
+        <a class="tile-btn" href={`/${s.id}/`} aria-label={`Learn more about ${s.data.navLabel}${suffix}`}>Learn More</a>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tiles { grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr)); }
+  .tile { position: relative; margin: 0; border-radius: var(--radius-lg); overflow: hidden; isolation: isolate; aspect-ratio: 4 / 5; box-shadow: var(--shadow); background: var(--forest-900); transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease); }
+  .tile:hover, .tile:focus-within { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .tile :global(img) { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .tile:hover :global(img), .tile:focus-within :global(img) { transform: scale(1.08); }
+  .tile::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgb(15 42 33 / 0) 35%, rgb(15 42 33 / 0.55) 62%, rgb(12 34 27 / 0.94) 100%); transition: opacity 0.5s; }
+  .tile-body { position: absolute; inset: auto 0 0 0; padding: 1.4rem 1.4rem 1.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .tile-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--forest-900); background: var(--gold); padding: 0.25rem 0.6rem; border-radius: 999px; }
+  .tile-title { margin: 0; font-size: 1.45rem; line-height: 1.15; }
+  .tile-title a { color: #fff; text-decoration: none; }
+  .tile-title a::after { content: ''; position: absolute; inset: 0; z-index: 0; }
+  .tile-title a:focus-visible { outline: none; }
+  .tile:has(.tile-title a:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .tile-btn {
+    position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.5rem 1rem; border-radius: 999px; font-weight: 650; font-size: 0.92rem; text-decoration: none;
+    color: var(--forest-900); background: #fff; transition: background-color 0.25s, gap 0.3s var(--ease);
+  }
+  .tile-btn::after { content: '→'; }
+  .tile-btn:hover { background: var(--gold); color: var(--forest-900); gap: 0.7rem; }
+</style>

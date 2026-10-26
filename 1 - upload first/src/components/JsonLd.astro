@@ -1,0 +1,7 @@
+---
+// Renders JSON-LD. Pass plain objects; entity IDs come from src/lib/schema.ts.
+interface Props { data: Record<string, unknown> | Record<string, unknown>[] }
+const graph = Array.isArray(Astro.props.data) ? Astro.props.data : [Astro.props.data];
+const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" set:html={json} />

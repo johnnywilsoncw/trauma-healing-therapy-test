@@ -1,0 +1,30 @@
+---
+// Geo page: a nearby community served from the Cupertino office. Never presented as an office.
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import GeoServices from '../components/GeoServices.astro';
+import OfficeCard from '../components/OfficeCard.astro';
+import ReadyToBegin from '../components/ReadyToBegin.astro';
+import { mdxComponents } from '../components/mdx';
+import banner from '../assets/wp/2025/04/Mariella-Banner-Image-2.jpg';
+
+interface Props { entry: CollectionEntry<'geo'> }
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+---
+<BaseLayout title={d.title} description={d.description}>
+  <Hero title={d.h1} image={banner} />
+  <div class="section">
+    <article class="wrap prose geo-body">
+      <Content components={{ ...mdxComponents, GeoServices, OfficeCard }} />
+    </article>
+  </div>
+  <ReadyToBegin />
+</BaseLayout>
+
+<style>
+  .geo-body { max-width: var(--wrap); }
+  .geo-body > :global(:not(.wide)) { max-width: var(--measure); }
+</style>

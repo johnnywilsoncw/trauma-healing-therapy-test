@@ -1,0 +1,42 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import CtaPair from './mdx/CtaPair.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  ctas?: boolean;
+  contactHref?: string;
+}
+const { eyebrow, title, subtitle, image, imageAlt = '', ctas = true, contactHref } = Astro.props;
+---
+<section class:list={['hero', { 'has-image': image }]}>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      {subtitle && <p class="lede">{subtitle}</p>}
+      <slot />
+      {ctas && <CtaPair contactHref={contactHref} />}
+    </div>
+    {image && (
+      <div class="hero-media">
+        <Picture src={image} alt={imageAlt} widths={[480, 800, 1100]} sizes="(min-width: 60rem) 34rem, 100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" />
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero { background: linear-gradient(180deg, var(--forest-50), var(--paper)); padding-block: clamp(2.25rem, 5vw, 4rem); }
+  .hero-inner { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 60rem) { .has-image .hero-inner { grid-template-columns: 1.05fr 1fr; } }
+  .hero h1 { margin-bottom: 0.4em; }
+  .hero-copy > :global(p:not(.eyebrow)) { max-width: 36rem; }
+  .hero-media :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 70% 35%; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+  .hero-media :global(picture) { display: block; }
+</style>

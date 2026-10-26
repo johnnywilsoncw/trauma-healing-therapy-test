@@ -1,0 +1,1071 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/addressing-adhd-myths-facts-vs-common-misconceptions/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/addressing-adhd-myths-facts-vs-common-misconceptions",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/can-adhd-be-misdiagnosed-common-reasons-and-conditions/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/can-adhd-be-misdiagnosed-common-reasons-and-conditions",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-handle-work-anxiety-simple-strategies-that-help/",
+      "destination": "/anxiety-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-handle-work-anxiety-simple-strategies-that-help",
+      "destination": "/anxiety-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-does-adult-adhd-look-like-signs-and-symptoms-explained/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-does-adult-adhd-look-like-signs-and-symptoms-explained",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-get-tested-for-adhd-and-what-to-expect/",
+      "destination": "/adhd-testing/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-get-tested-for-adhd-and-what-to-expect",
+      "destination": "/adhd-testing/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-the-relationship-between-adhd-and-ptsd/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-the-relationship-between-adhd-and-ptsd",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/marriage-problems-that-are-actually-normal-and-how-to-handle-them/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/marriage-problems-that-are-actually-normal-and-how-to-handle-them",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/the-right-words-how-to-explain-trauma-to-children/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/the-right-words-how-to-explain-trauma-to-children",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/supporting-your-child-with-adhd-a-guide-for-parents/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/supporting-your-child-with-adhd-a-guide-for-parents",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-study-with-adhd-6-tips-to-stay-focused/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-study-with-adhd-6-tips-to-stay-focused",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/strategies-for-nurturing-trauma-impacted-children/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/strategies-for-nurturing-trauma-impacted-children",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/nervous-about-adhd-testing-heres-what-the-process-really-looks-like/",
+      "destination": "/adhd-testing/",
+      "permanent": true
+    },
+    {
+      "source": "/nervous-about-adhd-testing-heres-what-the-process-really-looks-like",
+      "destination": "/adhd-testing/",
+      "permanent": true
+    },
+    {
+      "source": "/the-importance-of-therapy-that-recognizes-cultural-trauma/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/the-importance-of-therapy-that-recognizes-cultural-trauma",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-does-adhd-feel-like-understanding-the-emotional-and-mental-experience/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-does-adhd-feel-like-understanding-the-emotional-and-mental-experience",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/emdr-for-teens-how-trauma-focused-therapy-supports-adolescents-in-cupertino/",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/emdr-for-teens-how-trauma-focused-therapy-supports-adolescents-in-cupertino",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/supporting-teens-through-academic-stress-evidence-based-coping-tools-for-bay-area-students/",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/supporting-teens-through-academic-stress-evidence-based-coping-tools-for-bay-area-students",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/online-teen-therapy-in-california-is-virtual-counseling-effective-for-adolescents/",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/online-teen-therapy-in-california-is-virtual-counseling-effective-for-adolescents",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/what-good-enough-parenting-really-means-and-why-it-supports-healthier-more-resilient-kids/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-good-enough-parenting-really-means-and-why-it-supports-healthier-more-resilient-kids",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/healing-relationship-trauma-how-emdr-and-attachment-based-therapy-work-together-to-create-lasting-change/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/healing-relationship-trauma-how-emdr-and-attachment-based-therapy-work-together-to-create-lasting-change",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/signs-your-teen-may-be-struggling-when-to-seek-therapy/",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/signs-your-teen-may-be-struggling-when-to-seek-therapy",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/easy-calming-techniques-in-the-aftermath-of-a-shooting/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/easy-calming-techniques-in-the-aftermath-of-a-shooting",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-does-my-heart-race-for-no-reason/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-does-my-heart-race-for-no-reason",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-am-i-always-so-tired-understanding-the-hidden-emotional-weight-behind-constant-exhaustion/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-am-i-always-so-tired-understanding-the-hidden-emotional-weight-behind-constant-exhaustion",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/the-weight-on-your-chest-what-tightness-and-shortness-of-breath-could-be-telling-you/",
+      "destination": "/emdr-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/the-weight-on-your-chest-what-tightness-and-shortness-of-breath-could-be-telling-you",
+      "destination": "/emdr-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/from-tension-headaches-to-stomach-issues-how-stress-manifests-in-the-body/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/from-tension-headaches-to-stomach-issues-how-stress-manifests-in-the-body",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/do-you-get-headaches-that-no-one-can-explain/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/do-you-get-headaches-that-no-one-can-explain",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-do-you-clench-your-jaw-even-in-your-sleep/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-do-you-clench-your-jaw-even-in-your-sleep",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/does-your-tummy-hurt-when-ibs-might-be-about-more-than-just-food/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/does-your-tummy-hurt-when-ibs-might-be-about-more-than-just-food",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/5-effective-ways-to-help-your-teen-manage-anxiety/",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/5-effective-ways-to-help-your-teen-manage-anxiety",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/do-you-have-a-skin-condition-no-one-can-treat/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/do-you-have-a-skin-condition-no-one-can-treat",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/are-you-lying-awake-at-night-with-negative-thoughts/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/are-you-lying-awake-at-night-with-negative-thoughts",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/the-impact-of-medical-trauma-on-women-recognizing-coping-and-healing/",
+      "destination": "/therapy-for-women/",
+      "permanent": true
+    },
+    {
+      "source": "/the-impact-of-medical-trauma-on-women-recognizing-coping-and-healing",
+      "destination": "/therapy-for-women/",
+      "permanent": true
+    },
+    {
+      "source": "/embracing-your-authenticity-coping-with-the-mental-toll-of-hiding-your-sexuality/",
+      "destination": "/lgbtq-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/embracing-your-authenticity-coping-with-the-mental-toll-of-hiding-your-sexuality",
+      "destination": "/lgbtq-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-if-my-partner-is-polyamorous-and-im-not-navigating-different-relationship-styles/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/what-if-my-partner-is-polyamorous-and-im-not-navigating-different-relationship-styles",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/rekindling-romance-keeping-the-spark-alive-with-a-house-full-of-kids/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/rekindling-romance-keeping-the-spark-alive-with-a-house-full-of-kids",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/breaking-free-understanding-and-healing-from-trauma-bonding/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/breaking-free-understanding-and-healing-from-trauma-bonding",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/will-having-kids-change-my-relationship-what-to-expect-and-how-to-stay-connected/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/will-having-kids-change-my-relationship-what-to-expect-and-how-to-stay-connected",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/finding-yourself-first-how-relationship-therapy-can-support-you-while-single-and-searching/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/finding-yourself-first-how-relationship-therapy-can-support-you-while-single-and-searching",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/co-parenting-after-divorce-building-a-peaceful-path-for-you-and-your-children/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/co-parenting-after-divorce-building-a-peaceful-path-for-you-and-your-children",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-balance-talking-and-listening-in-relationships-the-art-of-effective-communication/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-balance-talking-and-listening-in-relationships-the-art-of-effective-communication",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-trauma-affects-your-identity-and-how-to-reclaim-it/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-trauma-affects-your-identity-and-how-to-reclaim-it",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-support-the-trauma-survivors-in-your-life-what-they-need-and-what-they-dont/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-support-the-trauma-survivors-in-your-life-what-they-need-and-what-they-dont",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-navigate-differences-in-sex-drive/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-navigate-differences-in-sex-drive",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/affrontare-la-perdita-insieme-terapia-intensiva-emdr-per-la-guarigione-delle-coppie-dopo-una-perdita-di-gravidanza/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/affrontare-la-perdita-insieme-terapia-intensiva-emdr-per-la-guarigione-delle-coppie-dopo-una-perdita-di-gravidanza",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/6740-2/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/6740-2",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/how-other-peoples-trauma-can-affect-you-too-understanding-and-coping-with-secondary-trauma/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-other-peoples-trauma-can-affect-you-too-understanding-and-coping-with-secondary-trauma",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/from-fear-to-freedom-reclaiming-your-life-after-medical-trauma-with-emdr/",
+      "destination": "/emdr-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/from-fear-to-freedom-reclaiming-your-life-after-medical-trauma-with-emdr",
+      "destination": "/emdr-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/when-divorce-leaves-scars-how-emdr-intensive-therapy-can-help-you-move-forward/",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/when-divorce-leaves-scars-how-emdr-intensive-therapy-can-help-you-move-forward",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/healing-the-inner-child-how-emdr-intensives-address-childhood-trauma/",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/healing-the-inner-child-how-emdr-intensives-address-childhood-trauma",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/come-il-trauma-degli-altri-puo-influenzare-anche-te-comprendere-e-affrontare-il-trauma-secondario/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/come-il-trauma-degli-altri-puo-influenzare-anche-te-comprendere-e-affrontare-il-trauma-secondario",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/remote-work-and-relationships/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/remote-work-and-relationships",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/infidelity-recovery-emdr-intensive-therapy-for-healing-the-emotional-wounds-caused-by-an-affair/",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/infidelity-recovery-emdr-intensive-therapy-for-healing-the-emotional-wounds-caused-by-an-affair",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/riscoprire-lamore-per-se-stessi-dopo-un-trauma/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/riscoprire-lamore-per-se-stessi-dopo-un-trauma",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/riconoscere-segnali-di-incompatibilita-nelle-relazioni/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/riconoscere-segnali-di-incompatibilita-nelle-relazioni",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/rediscovering-self-love-a-guide-to-nurturing-yourself-post-trauma/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/rediscovering-self-love-a-guide-to-nurturing-yourself-post-trauma",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/your-trauma-healing-journey-weekly-vs-intensive-emdr-therapy/",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/your-trauma-healing-journey-weekly-vs-intensive-emdr-therapy",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-compatibility-recognizing-signs-of-incompatibility-in-relationships/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-compatibility-recognizing-signs-of-incompatibility-in-relationships",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/tips-for-recovering-from-a-breakup/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/tips-for-recovering-from-a-breakup",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/consigli-per-superare-la-fine-di-una-relazione/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/consigli-per-superare-la-fine-di-una-relazione",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/trauma-da-immigrazione-comprendere-i-sintomi-e-le-strategie-di-guarigione/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/trauma-da-immigrazione-comprendere-i-sintomi-e-le-strategie-di-guarigione",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-immigration-trauma-understanding-symptoms-and-healing-strategies/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-immigration-trauma-understanding-symptoms-and-healing-strategies",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/riconnettersi-oltre-il-phubbing-riconquistare-lintimita-nella-tua-relazione/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/riconnettersi-oltre-il-phubbing-riconquistare-lintimita-nella-tua-relazione",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-setbacks-in-trauma-healing-steps-to-move-forward/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/navigating-setbacks-in-trauma-healing-steps-to-move-forward",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/reconnecting-beyond-phubbing-reclaiming-intimacy-in-your-relationship/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/reconnecting-beyond-phubbing-reclaiming-intimacy-in-your-relationship",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/identifying-unhelpful-conflict-management-strategies-a-path-towards-healthier-relationships/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/identifying-unhelpful-conflict-management-strategies-a-path-towards-healthier-relationships",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/quali-attivita-fisiche-possono-favorire-la-guarigione-dai-traumi/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/quali-attivita-fisiche-possono-favorire-la-guarigione-dai-traumi",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/how-physical-activities-can-aid-trauma-healing/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-physical-activities-can-aid-trauma-healing",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/coordinating-life-goals-with-your-partner-makes-you-more-likely-to-achieve-them/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/coordinating-life-goals-with-your-partner-makes-you-more-likely-to-achieve-them",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/come-validare-i-sentimenti-del-tuo-partner-una-guida-per-migliorare-le-relazioni/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/come-validare-i-sentimenti-del-tuo-partner-una-guida-per-migliorare-le-relazioni",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-heal-from-traumatic-natural-disasters/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-heal-from-traumatic-natural-disasters",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/nurturing-healthy-love-recognizing-signs-of-toxic-relationships/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/nurturing-healthy-love-recognizing-signs-of-toxic-relationships",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/riconoscere-le-relazioni-tossiche-una-guida-per-la-salute-relazionale/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/riconoscere-le-relazioni-tossiche-una-guida-per-la-salute-relazionale",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/why-complex-trauma-is-harder-to-heal-from-understanding-the-challenges/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/why-complex-trauma-is-harder-to-heal-from-understanding-the-challenges",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/il-trauma-complesso-sintomi-e-strade-verso-la-guarigione/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/il-trauma-complesso-sintomi-e-strade-verso-la-guarigione",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/comprendere-i-sintomi-del-trauma-psicologico-un-approfondimento/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/comprendere-i-sintomi-del-trauma-psicologico-un-approfondimento",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/career-choices-dethrone-finances-as-leading-cause-of-divorce-navigating-the-professional-personal-balance/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/career-choices-dethrone-finances-as-leading-cause-of-divorce-navigating-the-professional-personal-balance",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/setting-boundaries-is-essential-if-you-are-a-people-pleaser-a-guide-for-couples/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/setting-boundaries-is-essential-if-you-are-a-people-pleaser-a-guide-for-couples",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/childhood-trauma-plays-a-significant-role-in-obesity-for-some/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/childhood-trauma-plays-a-significant-role-in-obesity-for-some",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/infidelity-trauma-what-is-it-and-how-to-recover/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/infidelity-trauma-what-is-it-and-how-to-recover",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/physical-manifestations-of-trauma-the-silent-symptoms/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/physical-manifestations-of-trauma-the-silent-symptoms",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/overcoming-reproductive-trauma-a-journey-to-healing-and-resilience/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/overcoming-reproductive-trauma-a-journey-to-healing-and-resilience",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-active-listening-can-boost-connection-with-your-partner/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-active-listening-can-boost-connection-with-your-partner",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-navigate-emotional-invalidations-in-your-relationship/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/how-to-navigate-emotional-invalidations-in-your-relationship",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-the-challenges-of-seeking-help-after-trauma/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/understanding-the-challenges-of-seeking-help-after-trauma",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/therapy-services/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/therapy-services",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/contact-me/",
+      "destination": "/contact-us/",
+      "permanent": true
+    },
+    {
+      "source": "/contact-me",
+      "destination": "/contact-us/",
+      "permanent": true
+    },
+    {
+      "source": "/free-consultation-request/",
+      "destination": "/contact-us/",
+      "permanent": true
+    },
+    {
+      "source": "/free-consultation-request",
+      "destination": "/contact-us/",
+      "permanent": true
+    },
+    {
+      "source": "/sitemap_index.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/page-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/post-sitemap.xml",
+      "destination": "/sitemap.xml",
+      "permanent": true
+    },
+    {
+      "source": "/feed/",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/feed",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/category/trauma-therapy/",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/trauma-therapy",
+      "destination": "/trauma-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/emdr-therapy/",
+      "destination": "/emdr-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/emdr-therapy",
+      "destination": "/emdr-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/emdr-intensives/",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/category/emdr-intensives",
+      "destination": "/emdr-intensives/",
+      "permanent": true
+    },
+    {
+      "source": "/category/couples-therapy/",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/couples-therapy",
+      "destination": "/couples-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/terapia-in-italiano/",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/category/terapia-in-italiano",
+      "destination": "/terapia-in-italiano/",
+      "permanent": true
+    },
+    {
+      "source": "/category/premarital-counseling/",
+      "destination": "/premarital-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/category/premarital-counseling",
+      "destination": "/premarital-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/category/lgbtq-therapy/",
+      "destination": "/lgbtq-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/lgbtq-therapy",
+      "destination": "/lgbtq-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/therapy-for-women/",
+      "destination": "/therapy-for-women/",
+      "permanent": true
+    },
+    {
+      "source": "/category/therapy-for-women",
+      "destination": "/therapy-for-women/",
+      "permanent": true
+    },
+    {
+      "source": "/category/teen-therapy/",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/category/teen-therapy",
+      "destination": "/teen-counseling/",
+      "permanent": true
+    },
+    {
+      "source": "/category/adhd-therapy/",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/adhd-therapy",
+      "destination": "/adhd-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/adhd-testing/",
+      "destination": "/adhd-testing/",
+      "permanent": true
+    },
+    {
+      "source": "/category/adhd-testing",
+      "destination": "/adhd-testing/",
+      "permanent": true
+    },
+    {
+      "source": "/category/anxiety-therapy/",
+      "destination": "/anxiety-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/category/anxiety-therapy",
+      "destination": "/anxiety-therapy/",
+      "permanent": true
+    },
+    {
+      "source": "/author/:name*",
+      "destination": "/our-team/",
+      "permanent": true
+    },
+    {
+      "source": "/category/:name*",
+      "destination": "/blog/",
+      "permanent": true
+    },
+    {
+      "source": "/tag/:name*",
+      "destination": "/blog/",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    },
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
