@@ -40,8 +40,8 @@ const { eyebrow, title, subtitle, image, chips = [], ctas = true, crumbs, size =
 
 <style>
   .phero { position: relative; isolation: isolate; color: #fff; overflow: hidden; display: flex; align-items: center; }
-  .phero-md { min-height: clamp(30rem, 68vh, 40rem); }
-  .phero-lg { min-height: clamp(34rem, 82vh, 48rem); }
+  .phero-md { min-height: clamp(20rem, 44vh, 27rem); }
+  .phero-lg { min-height: clamp(28rem, 66vh, 38rem); }
   .phero-bg { position: absolute; inset: 0; z-index: -2; }
   .phero-bg :global(picture), .phero-bg :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 70% 35%; }
   @media (prefers-reduced-motion: no-preference) { .phero-bg :global(img) { animation: kenburns 22s ease-out both; } }
@@ -54,11 +54,11 @@ const { eyebrow, title, subtitle, image, chips = [], ctas = true, crumbs, size =
   }
   @media (max-width: 48rem) { .phero::before { background: linear-gradient(0deg, rgb(12 34 27 / 0.92) 10%, rgb(15 42 33 / 0.72) 60%, rgb(15 42 33 / 0.45)); } }
   .phero-lotus { position: absolute; z-index: -1; left: -5rem; bottom: -4rem; width: clamp(18rem, 34vw, 30rem); height: auto; color: #fff; opacity: 0.06; }
-  .phero-inner { padding-block: clamp(4rem, 9vw, 7rem) clamp(5rem, 10vw, 8rem); }
+  .phero-inner { padding-block: clamp(2.5rem, 5vw, 4rem) clamp(3.5rem, 6vw, 5rem); }
   .phero-inner > * { max-width: 42rem; }
   .phero h1 { color: #fff; margin-bottom: 0.35em; }
   .phero h1 :global(em) { color: var(--gold); }
-  .phero-sub { font-family: var(--font-display); font-style: italic; font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.8rem); color: #f3dfe5; line-height: 1.35; }
+  .phero-sub { font-family: var(--font-display); font-style: italic; font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem); color: #f3dfe5; line-height: 1.35; }
   .phero :global(p) { color: #e3ece7; }
   .phero :global(a:not(.btn)) { color: #fff; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 1.25rem 0 0; }

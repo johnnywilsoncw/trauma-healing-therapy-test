@@ -3,7 +3,6 @@ import { getEntry, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import Ticker from '../components/Ticker.astro';
 import ServiceGrid from '../components/ServiceGrid.astro';
 import ClinicianCard from '../components/ClinicianCard.astro';
 import PostCard from '../components/PostCard.astro';
@@ -37,12 +36,7 @@ const highlights = [
   description="Trauma Healing Therapy offers trauma-informed counseling for individuals, couples, families, teens and kids, in person in Cupertino and online in San Francisco and across California."
   image={banner}
 >
-  <PageHero size="lg" eyebrow="Trauma Healing Therapy" title="Therapy in Cupertino, CA <em>&amp; Online Across California</em>" subtitle="Real talk, real healing" image={banner}>
-    <p>
-      Trauma-informed therapy for Individuals, Couples, Families, Teens and Kids. In-person appointments in Cupertino &amp; online in
-      San Francisco and across California. You can reach us at <a href={practice.phoneHref}><strong>{practice.phone}</strong></a> to get started.
-    </p>
-  </PageHero>
+  <PageHero size="lg" title="Therapy in Cupertino, CA <em>&amp; Online Across California</em>" subtitle="Real talk, real healing" image={banner} />
 
   <section class="highlights" aria-label="Why clients choose us">
     <ul class="wrap hl-grid" data-stagger>
@@ -75,8 +69,6 @@ const highlights = [
       </div>
     </div>
   </section>
-
-  <Ticker />
 
   <section class="section section-sand" aria-labelledby="specialties-heading">
     <div class="wrap">

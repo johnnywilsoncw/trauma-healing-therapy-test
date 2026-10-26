@@ -7,5 +7,7 @@ import MapEmbed from './MapEmbed.astro';
 import MentayaWidget from './MentayaWidget.astro';
 import YouTube from './YouTube.astro';
 import Section from './Section.astro';
+import CardGrid from './CardGrid.astro';
+import InfoCard from './InfoCard.astro';
 
-export const mdxComponents = { Section, Button, ContactForm, CtaPair, Faq, MapEmbed, MentayaWidget, YouTube };
+export const mdxComponents = { Section, CardGrid, InfoCard, Button, ContactForm, CtaPair, Faq, MapEmbed, MentayaWidget, YouTube };

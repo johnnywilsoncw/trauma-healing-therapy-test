@@ -1,27 +1,48 @@
 ---
-// Welcome copy shared by /contact-us/ and the two office pages (wording from the live site),
-// laid out as three ways to connect plus the video and form.
+// Top of /contact-us/ and the two office pages (wording from the live site):
+// the welcome and the form first, the three ways to connect below, then the video.
+import { Image } from 'astro:assets';
 import YouTube from './mdx/YouTube.astro';
 import ContactForm from './mdx/ContactForm.astro';
+import Lotus from '../assets/lotus.svg';
 import { practice } from '../data/site';
+import coordinators from '../assets/wp/2026/07/CW-coordinators.jpg';
 
-interface Props { video?: string; matchingCopy?: 'team' | 'snow' }
-const { video, matchingCopy = 'team' } = Astro.props;
+interface Props { title: string; subline?: string; video?: string; matchingCopy?: 'team' | 'snow' }
+const { title, subline, video, matchingCopy = 'team' } = Astro.props;
 const icons = {
   message: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
   calendar: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
   phone: 'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z',
 };
 ---
-<section class="ways" aria-labelledby="ways-heading">
+<section class="cw-top" aria-labelledby="cw-title">
+  <span class="blob b1" aria-hidden="true"></span>
+  <span class="blob b2" aria-hidden="true"></span>
+  <Lotus class="cw-lotus" aria-hidden="true" />
+  <div class="wrap cw-grid">
+    <div class="cw-copy">
+      <h1 id="cw-title" class="eyebrow cw-h1">{title}</h1>
+      {subline && <p class="cw-sub">{subline}</p>}
+      <h2 class="cw-heading">Ready to begin your <em>healing journey?</em></h2>
+      <p class="cw-welcome">Welcome — we’re so glad you’re here.</p>
+      <p class="lede">Reaching out for support takes courage, and healing is absolutely possible. You don’t have to go through this alone. We would be honored to walk alongside you and support you on your healing journey.</p>
+      <p>You don’t need to have everything figured out to begin. We’re here to support you every step of the way. Reach out today and take your first step toward healing.</p>
+    </div>
+    <div id="message-form" class="cw-form">
+      <ContactForm heading="Send us a message" layout="stacked" />
+    </div>
+  </div>
+</section>
+
+<section class="section ways" aria-labelledby="ways-heading">
   <div class="wrap">
-    <h2 id="ways-heading" class="visually-hidden">Ways to connect</h2>
-    <p class="ways-intro" data-reveal>For the fastest way to connect you can:</p>
+    <h2 id="ways-heading" class="ways-heading" data-reveal>For the fastest way to connect you can:</h2>
     <ol class="ways-grid" data-stagger>
       <li class="way" data-reveal>
         <span class="w-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={icons.message} /></svg></span>
         <p>Send us a quick message by completing the form. {practice.responseTime}</p>
-        <a class="w-link" href="#message-form">Send a message</a>
+        <a class="w-link" href="#message-form">Go to the form</a>
       </li>
       <li class="way way-featured" data-reveal>
         <span class="w-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d={icons.calendar} /></svg></span>
@@ -41,42 +62,50 @@ const icons = {
   </div>
 </section>
 
-<section class="section welcome" aria-labelledby="welcome-heading">
-  <div class="wrap welcome-grid">
-    <div data-reveal="left">
-      <p class="eyebrow">Welcome</p>
-      <h2 id="welcome-heading">Ready to begin your <em>healing journey?</em></h2>
-      <p class="lede">Reaching out for support takes courage, and healing is absolutely possible. You don’t have to go through this alone. We would be honored to walk alongside you and support you on your healing journey.</p>
-      {video && <YouTube id={video} title="Welcome to Trauma Healing Therapy" />}
-      <p>You don’t need to have everything figured out to begin. We’re here to support you every step of the way. Reach out today and take your first step toward healing.</p>
-    </div>
-    <div id="message-form" class="form-col" data-reveal="zoom">
-      <ContactForm heading="Send us a message" />
-    </div>
+<section class="section section-tint team-video" aria-labelledby="coord-heading">
+  <div class="wrap tv-grid">
+    {video && <div data-reveal="left"><YouTube id={video} title="Welcome to Trauma Healing Therapy" /></div>}
+    <figure class="coord" data-reveal="right">
+      <Image src={coordinators} alt="Steph and Snow, Trauma Healing Therapy care coordinators" width={720} widths={[360, 720]} sizes="(min-width: 60rem) 34rem, 90vw" />
+      <figcaption id="coord-heading">Meet Snow and Steph, Your Care Coordinators</figcaption>
+    </figure>
   </div>
 </section>
 
 <style>
-  .ways { position: relative; z-index: 2; margin-top: clamp(-4rem, -6vw, -2.5rem); }
-  .ways-intro { text-align: center; font-family: var(--font-display); font-style: italic; font-size: 1.25rem; color: var(--ink-soft); margin-bottom: 1rem; display: none; }
+  .cw-top { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(160deg, var(--forest-50) 0%, var(--paper) 55%, var(--rose-50) 100%); padding-block: clamp(2rem, 4vw, 3.5rem); }
+  .blob { position: absolute; z-index: -1; border-radius: 50%; filter: blur(40px); opacity: 0.5; }
+  .b1 { width: 24rem; height: 24rem; background: var(--sage); top: -8rem; left: -6rem; }
+  .b2 { width: 18rem; height: 18rem; background: #f6d3dc; bottom: -6rem; right: 30%; }
+  .cw-lotus { position: absolute; z-index: -1; left: 38%; bottom: -3rem; width: 16rem; height: auto; color: var(--forest); opacity: 0.05; }
+  .cw-grid { display: grid; gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+  @media (min-width: 62rem) { .cw-grid { grid-template-columns: 1fr 1.05fr; } }
+  .cw-h1 { margin-bottom: 0.5rem; }
+  .cw-sub { font-weight: 650; color: var(--forest); margin-bottom: 1rem; }
+  .cw-heading { margin-bottom: 0.3em; }
+  .cw-welcome { font-family: var(--font-display); font-style: italic; font-size: 1.3rem; color: var(--rose); }
+  .cw-form :global(.contact-form) { margin: 0; box-shadow: var(--shadow-lg); }
+  .ways-heading { text-align: center; font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.7rem); margin-bottom: 1.75rem; }
   .ways-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); counter-reset: way; }
-  .way { position: relative; margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 2rem 1.75rem 1.75rem; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 1px solid rgb(15 42 33 / 0.06); counter-increment: way; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
+  .way { position: relative; margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 1.75rem 1.6rem 1.6rem; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 1px solid rgb(15 42 33 / 0.06); counter-increment: way; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); }
   .way:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-  .way::after { content: counter(way, decimal-leading-zero); position: absolute; right: 1.5rem; top: 1.25rem; font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--forest-50); }
-  .way p { margin: 0 0 0.5rem; font-size: 0.98rem; color: var(--ink-soft); }
+  .way::after { content: counter(way, decimal-leading-zero); position: absolute; right: 1.5rem; top: 1.25rem; font-family: var(--font-display); font-size: 2.4rem; line-height: 1; color: var(--forest-50); }
+  .way p { margin: 0 0 0.5rem; font-size: 0.97rem; color: var(--ink-soft); }
   .way strong { color: var(--ink); }
-  .w-icon { display: grid; place-items: center; width: 3.2rem; height: 3.2rem; border-radius: 1rem; color: var(--rose); background: var(--rose-50); margin-bottom: 0.5rem; transition: transform 0.4s var(--ease); }
-  .way:hover .w-icon { transform: rotate(-8deg) scale(1.08); }
-  .w-icon svg { width: 1.5rem; height: 1.5rem; }
+  .w-icon { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 1rem; color: var(--rose); background: var(--rose-50); margin-bottom: 0.4rem; }
+  .w-icon svg { width: 1.4rem; height: 1.4rem; }
   .w-link, .w-phone { margin-top: auto; font-weight: 700; text-decoration: none; }
-  .w-link::after { content: ' →'; }
-  .w-phone { font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; color: var(--forest); }
-  .way-featured { background: radial-gradient(120% 140% at 0% 0%, #2a6a53 0%, var(--forest) 45%, var(--forest-900) 100%); color: #fff; border: 0; }
+  .w-link::after { content: ' ↑'; }
+  .w-phone { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; color: var(--forest); }
+  .way-featured { background: radial-gradient(120% 140% at 0% 0%, #2a6a53 0%, var(--forest) 45%, var(--forest-900) 100%); border: 0; }
   .way-featured p, .way-featured strong { color: #e8f0eb; }
   .way-featured::after { color: rgb(255 255 255 / 0.12); }
   .way-featured .w-icon { background: rgb(255 255 255 / 0.12); color: var(--gold); }
   .way-featured .btn-primary { --btn-bg: #fff; --btn-fg: var(--forest-700); --btn-bd: #fff; margin-top: auto; }
-  .welcome-grid { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-  @media (min-width: 62rem) { .welcome-grid { grid-template-columns: 1fr 1fr; } .form-col { position: sticky; top: 7rem; } }
-  .form-col :global(.contact-form) { margin: 0; box-shadow: var(--shadow-lg); }
+  .tv-grid { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; }
+  @media (min-width: 60rem) { .tv-grid { grid-template-columns: 1fr 1fr; } }
+  .tv-grid :global(.yt) { margin: 0; }
+  .coord { margin: 0; }
+  .coord :global(img) { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 6px solid #fff; }
+  .coord figcaption { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; color: var(--rose); margin-top: 0.75rem; text-align: center; }
 </style>

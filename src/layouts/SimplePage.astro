@@ -2,6 +2,7 @@
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import SoftHero from '../components/SoftHero.astro';
 import ReadyToBegin from '../components/ReadyToBegin.astro';
 import { mdxComponents } from '../components/mdx';
 import testimonialsBanner from '../assets/wp/2024/05/Testimonials-Banner-1.jpg';
@@ -14,11 +15,20 @@ const legal = d.group === 'legal';
 const image = entry.id === 'testimonials' ? testimonialsBanner : undefined;
 ---
 <BaseLayout title={d.title} description={d.description} noindex={d.noindex}>
-  <Hero title={d.h1} ctas={!legal} image={image} />
-  <div class="section">
-    <article class="wrap-narrow prose">
+  {d.sections ? (
+    <>
+      <SoftHero eyebrow="Resources" title={d.h1} />
       <Content components={mdxComponents} />
-    </article>
-  </div>
-  {!legal && <ReadyToBegin />}
+    </>
+  ) : (
+    <>
+      <Hero title={d.h1} ctas={!legal} image={image} />
+      <div class="section">
+        <article class="wrap-narrow prose">
+          <Content components={mdxComponents} />
+        </article>
+      </div>
+      {!legal && <ReadyToBegin />}
+    </>
+  )}
 </BaseLayout>

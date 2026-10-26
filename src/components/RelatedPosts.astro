@@ -1,10 +1,12 @@
 ---
-// Filtered by the post's explicit category (a service ID). Renders nothing when empty.
+// Three posts in a grid: this service's own posts first (by explicit category), then the
+// most recent posts from the rest of the blog so the row is always full.
 import PostCard from './PostCard.astro';
-import { postsForService } from '../lib/content';
+import { getPosts } from '../lib/content';
 interface Props { serviceId: string; heading?: string }
 const { serviceId, heading = 'From Our Blog' } = Astro.props;
-const posts = await postsForService(serviceId, 3);
+const all = await getPosts();
+const posts = [...all.filter((p) => p.data.category.id === serviceId), ...all.filter((p) => p.data.category.id !== serviceId)].slice(0, 3);
 ---
 {posts.length > 0 && (
   <section class="section section-sand" aria-labelledby={`posts-${serviceId}`}>
@@ -13,7 +15,11 @@ const posts = await postsForService(serviceId, 3);
         <p class="eyebrow">Keep reading</p>
         <h2 id={`posts-${serviceId}`}>{heading}</h2>
       </div>
-      <ul class="grid-cards">{posts.map((p, i) => <PostCard post={p} featured={posts.length === 1 && i === 0} />)}</ul>
+      <ul class="grid-cards posts-3">{posts.map((p) => <PostCard post={p} />)}</ul>
     </div>
   </section>
 )}
+
+<style>
+  @media (min-width: 56rem) { .posts-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>

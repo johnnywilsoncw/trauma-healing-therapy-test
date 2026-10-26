@@ -112,6 +112,8 @@ const pages = defineCollection({
     h1: z.string(),
     navLabel: z.string(),
     group: z.enum(['page', 'legal']),
+    // true when the body is built from <Section> bands (rendered full width, not as an article)
+    sections: z.boolean().default(false),
     noindex: z.boolean().default(false),
     draft: z.boolean().default(false),
     updated: isoDate.optional(),

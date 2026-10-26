@@ -2,7 +2,6 @@
 // An actual office page. Office facts come from src/data/site.ts; directions from the MDX body.
 import { render, getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
-import Hero from '../components/Hero.astro';
 import ContactWelcome from '../components/ContactWelcome.astro';
 import YouTube from '../components/mdx/YouTube.astro';
 import MapEmbed from '../components/mdx/MapEmbed.astro';
@@ -21,11 +20,7 @@ const { Content } = await render(entry);
 const geo = id === 'cupertino' ? (await getCollection('geo')).filter((g) => !g.data.draft).sort((a, b) => a.data.city.localeCompare(b.data.city)) : [];
 ---
 <BaseLayout title={d.title} description={d.description} schema={[officeSchema(id)]}>
-  <Hero title={d.h1} contactHref="#contact-form">
-    <p class="lede">{fullAddress(id)} <strong>({o.availability})</strong></p>
-  </Hero>
-
-  <div id="contact-form"><ContactWelcome video={d.welcomeVideo} matchingCopy={id === 'san-francisco' ? 'snow' : 'team'} /></div>
+  <ContactWelcome title={d.h1} subline={`${fullAddress(id)} (${o.availability})`}video={d.welcomeVideo} matchingCopy={id === 'san-francisco' ? 'snow' : 'team'} />
 
   <section class="section section-tint" aria-labelledby="office-heading">
     <div class="wrap office-grid">

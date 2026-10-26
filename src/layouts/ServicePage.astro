@@ -21,10 +21,6 @@ const url = `${SITE_URL}/${entry.id}/`;
 const it = d.lang === 'it';
 const isApproach = d.kind === 'approach';
 const group = d.kind === 'modality' ? 'Approaches' : isApproach ? 'Other Approaches' : 'Specialties';
-// Hero facts restate the confirmed service model (Cupertino in person, San Francisco online only).
-const chips = isApproach ? [] : it
-  ? ['Di persona a Cupertino', 'Online in tutta la California', 'Consulenza gratuita']
-  : ['In person in Cupertino', 'Online in San Francisco & across California', 'Free consultation'];
 ---
 <BaseLayout
   title={d.title}
@@ -38,8 +34,6 @@ const chips = isApproach ? [] : it
     title={d.h1}
     subtitle={d.subtitle}
     image={d.banner ?? d.card?.image ?? fallback}
-    chips={chips}
-    crumbs={[{ label: it ? 'Home' : 'Home', href: '/' }, { label: group }, { label: d.navLabel }]}
   />
 
   <div class="service-content">
