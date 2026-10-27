@@ -2,7 +2,7 @@
 // Geo page: a nearby community served from the Cupertino office. Never presented as an office.
 import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
-import Hero from '../components/Hero.astro';
+import PageHero from '../components/PageHero.astro';
 import GeoServices from '../components/GeoServices.astro';
 import OfficeCard from '../components/OfficeCard.astro';
 import ReadyToBegin from '../components/ReadyToBegin.astro';
@@ -15,7 +15,7 @@ const d = entry.data;
 const { Content } = await render(entry);
 ---
 <BaseLayout title={d.title} description={d.description}>
-  <Hero title={d.h1} image={banner} />
+  <PageHero title={d.h1} image={banner} ctas={false} />
   <div class="section">
     <article class="wrap prose geo-body">
       <Content components={{ ...mdxComponents, GeoServices, OfficeCard }} />

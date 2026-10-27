@@ -11,5 +11,6 @@ import CardGrid from './CardGrid.astro';
 import InfoCard from './InfoCard.astro';
 import Quote from './Quote.astro';
 import QuoteSlider from './QuoteSlider.astro';
+import WelcomeForm from './WelcomeForm.astro';
 
-export const mdxComponents = { Section, CardGrid, InfoCard, Quote, QuoteSlider, Button, ContactForm, CtaPair, Faq, MapEmbed, MentayaWidget, YouTube };
+export const mdxComponents = { Section, CardGrid, InfoCard, Quote, QuoteSlider, WelcomeForm, Button, ContactForm, CtaPair, Faq, MapEmbed, MentayaWidget, YouTube };

@@ -3,11 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SoftHero from '../../components/SoftHero.astro';
 import PostCard from '../../components/PostCard.astro';
 import ReadyToBegin from '../../components/ReadyToBegin.astro';
-import { getPosts, getServices } from '../../lib/content';
+import { getPosts } from '../../lib/content';
 
 const posts = await getPosts();
-const [featured, ...rest] = posts;
-const services = (await getServices()).filter((s) => posts.some((p) => p.data.category.id === s.id));
 ---
 <BaseLayout
   title="Blog | Trauma Healing Therapy"
@@ -17,50 +15,15 @@ const services = (await getServices()).filter((s) => posts.some((p) => p.data.ca
 
   <section class="section blog" aria-label="Articles">
     <div class="wrap">
-      <div class="filters" role="group" aria-label="Filter articles by topic" hidden>
-        <button type="button" aria-pressed="true" data-filter="all">All topics</button>
-        {services.map((s) => <button type="button" aria-pressed="false" data-filter={s.id}>{s.data.navLabel}</button>)}
-      </div>
-      <p class="filter-status visually-hidden" role="status" aria-live="polite"></p>
       <ul class="grid-cards posts">
-        {featured && <PostCard post={featured} featured headingLevel="h2" />}
-        {rest.map((p) => <PostCard post={p} headingLevel="h2" />)}
+        {posts.map((p) => <PostCard post={p} headingLevel="h2" />)}
       </ul>
-      <noscript><p>Browse by topic from each specialty page.</p></noscript>
     </div>
   </section>
   <ReadyToBegin />
 </BaseLayout>
 
-<script>
-  // Topic filter: progressive enhancement. Without JS every post is listed.
-  const wrap = document.querySelector<HTMLElement>('.filters');
-  const cards = [...document.querySelectorAll<HTMLElement>('.posts > li')];
-  const status = document.querySelector<HTMLElement>('.filter-status');
-  if (wrap) {
-    wrap.hidden = false;
-    wrap.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-filter]');
-      if (!btn) return;
-      const f = btn.dataset.filter!;
-      wrap.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-      let shown = 0;
-      cards.forEach((c, i) => {
-        const show = f === 'all' || c.dataset.cat === f;
-        c.hidden = !show;
-        c.classList.toggle('featured', f === 'all' && i === 0);
-        if (show) shown++;
-      });
-      if (status) status.textContent = `${shown} article${shown === 1 ? '' : 's'} shown`;
-    });
-  }
-</script>
-
 <style>
-  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
-  .filters button { font: 600 0.92rem var(--font-body); padding: 0.6rem 1.1rem; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; transition: background-color 0.25s, color 0.25s, border-color 0.25s, transform 0.3s var(--ease); }
-  .filters button:hover { border-color: var(--forest); transform: translateY(-2px); }
-  .filters button[aria-pressed='true'] { background: var(--forest); border-color: var(--forest); color: #fff; }
-  .posts > li[hidden] { display: none; }
   .blog { padding-top: clamp(2.5rem, 5vw, 4rem); }
+  .posts { grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); }
 </style>

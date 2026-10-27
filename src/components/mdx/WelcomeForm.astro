@@ -1,0 +1,17 @@
+---
+// Welcome copy (the slot) in the left column, the full vertical inquiry form in the right column.
+import ContactForm from './ContactForm.astro';
+---
+<section class="wide welcome-form" aria-label="Welcome and contact form">
+  <div class="wf-copy" data-reveal="left"><slot /></div>
+  <div id="contact-form" class="wf-form" data-reveal="right"><ContactForm heading="Send us a message" layout="stacked" /></div>
+</section>
+
+<style>
+  .welcome-form { display: grid; gap: clamp(2rem, 4vw, 4rem); align-items: start; margin-bottom: clamp(2rem, 5vw, 4rem); }
+  @media (min-width: 62rem) { .welcome-form { grid-template-columns: 1fr 1.05fr; } }
+  .wf-copy > :global(:first-child) { margin-top: 0; }
+  .wf-copy :global(h2)::after { content: ''; display: block; width: 3.5rem; height: 3px; border-radius: 3px; background: var(--rose); margin-top: 0.9rem; }
+  .wf-copy :global(p:first-of-type) { font-size: 1.12rem; color: var(--ink); }
+  .wf-form :global(.contact-form) { margin: 0; max-width: none; box-shadow: var(--shadow-lg); }
+</style>

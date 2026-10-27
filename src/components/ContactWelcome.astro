@@ -121,5 +121,8 @@ const icons = {
   .tv-grid :global(.yt) { margin: 0; }
   .coord { margin: 0; }
   .coord :global(img) { display: block; width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 6px solid #fff; }
+  /* photo and walkthrough video share one 16:9 frame so they line up (the photo crops from the top) */
+  .team-video:not(.solo) .coord :global(img) { aspect-ratio: 16 / 9; object-fit: cover; object-position: center top; }
+  .tv-grid { align-items: start; }
   .tour :global(.yt-frame) { border: 6px solid #fff; box-shadow: var(--shadow-lg); }
 </style>

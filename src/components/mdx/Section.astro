@@ -21,7 +21,7 @@ const short = textOnly && words <= 170;
 const long = textOnly && !short;
 ---
 <section class:list={['sec', `sec-${variant}`, `tone-${tone}`, { 'has-media': hasMedia && variant === 'default', flip, 'section-dark': tone === 'dark', 'sec-short': short, 'sec-long': long, texture: short || variant === 'closing' }]}>
-  {(variant === 'closing' || variant === 'form' || short) && <Lotus class="lotus-mark sec-lotus" aria-hidden="true" />}
+  {(variant === 'closing' || variant === 'form') && <Lotus class="lotus-mark sec-lotus" aria-hidden="true" />}
   <div class="wrap sec-grid">
     {hasMedia && variant === 'default' && (
       <div class="sec-media" data-reveal={flip ? 'left' : 'right'}><slot name="media" /></div>
@@ -56,7 +56,6 @@ const long = textOnly && !short;
 
   /* short text-only: centered on a textured band */
   .sec-short .sec-grid { max-width: 48rem; text-align: center; }
-  .sec-short .sec-lotus { color: var(--forest); opacity: 0.05; right: -5rem; bottom: -5rem; }
   .sec-short .sec-body :global(p) { font-size: 1.08rem; }
   .sec-short .sec-body :global(.btn-row) { justify-content: center; }
   .sec-short .sec-body :global(ul) { text-align: left; }

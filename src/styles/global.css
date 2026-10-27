@@ -170,15 +170,18 @@ svg { flex-shrink: 0; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
-/* Textured band: soft linen grain plus a faint lotus-dot pattern, for short centered sections */
+/* Textured band: a soft color wash with faint flowing contour lines (neutral, not floral).
+   Used on short centered sections; a textured band never sits directly under another decorated band. */
 .texture { position: relative; isolation: isolate; }
 .texture::before {
   content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.32 0 0 0 0 0.25 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 1px 1px, rgb(31 81 64 / 0.12) 1px, transparent 1.5px);
-  background-size: 160px 160px, 22px 22px;
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 50%, #000 40%, transparent 100%);
-  mask-image: radial-gradient(120% 90% at 50% 50%, #000 40%, transparent 100%);
+    radial-gradient(60% 80% at 0% 0%, rgb(214 227 217 / 0.75), transparent 70%),
+    radial-gradient(55% 75% at 100% 100%, rgb(251 239 242 / 0.8), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cg fill='none' stroke='%231f5140' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath stroke-opacity='.10' d='M0 40Q40 18 80 40T160 40T240 40T320 40'/%3E%3Cpath stroke-opacity='.07' d='M0 72Q40 52 80 72T160 72T240 72T320 72'/%3E%3Cpath stroke-opacity='.10' d='M0 160Q40 186 80 160T160 160T240 160T320 160'/%3E%3Cpath stroke-opacity='.07' d='M0 192Q40 214 80 192T160 192T240 192T320 192'/%3E%3Cpath stroke-opacity='.08' d='M0 270Q40 250 80 270T160 270T240 270T320 270'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, 320px 320px;
 }
-.section-dark.texture::before, .texture.tone-dark::before { filter: invert(1); opacity: 0.5; }
+.section-dark.texture::before, .texture.tone-dark::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cg fill='none' stroke='%231f5140' stroke-width='1.1' stroke-linecap='round'%3E%3Cpath stroke-opacity='.10' d='M0 40Q40 18 80 40T160 40T240 40T320 40'/%3E%3Cpath stroke-opacity='.07' d='M0 72Q40 52 80 72T160 72T240 72T320 72'/%3E%3Cpath stroke-opacity='.10' d='M0 160Q40 186 80 160T160 160T240 160T320 160'/%3E%3Cpath stroke-opacity='.07' d='M0 192Q40 214 80 192T160 192T240 192T320 192'/%3E%3Cpath stroke-opacity='.08' d='M0 270Q40 250 80 270T160 270T240 270T320 270'/%3E%3C/g%3E%3C/svg%3E"); filter: invert(1); opacity: 0.35; }
+/* alternate: no texture right after a hero, a dark band, a form band or another textured band */
+:is(.texture, .section-dark, .phero, .shero, .hero, .cw-top, .sec-form) + .texture:not(.section-dark)::before,
+.phero + .service-content > .texture:first-child::before { display: none; }
