@@ -26,5 +26,7 @@ const { Content } = await render(entry);
 
 <style>
   .geo-body { max-width: var(--wrap); }
-  .geo-body > :global(:not(.wide)) { max-width: var(--measure); }
+  .geo-body > :global(:not(.wide, .faq, h2:has(+ .faq))) { max-width: var(--measure); }
+  /* directions: centered heading over full-width dropdowns */
+  .geo-body > :global(h2:has(+ .faq)) { text-align: center; margin-bottom: 1.5rem; }
 </style>
